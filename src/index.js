@@ -21,9 +21,9 @@ export default class extends Texture {
 		fontWeight = 'normal',
 		fontVariant = 'normal',
 		fontStyle = 'normal',
-		strokeStyle = 'black',
 		fillStyle = 'white',
-		outlineWidth = 0,
+		lineWidth = 0,
+		strokeStyle = 'black',
 		padding = 0.25,
 		magFilter = LinearFilter,
 		minFilter = LinearFilter,
@@ -39,10 +39,10 @@ export default class extends Texture {
 		this._fontWeight = fontWeight;
 		this._fontVariant = fontVariant;
 		this._fontStyle = fontStyle;
-		this._padding = padding;
-		this._strokeStyle = strokeStyle;
 		this._fillStyle = fillStyle;
-		this._outlineWidth = outlineWidth;
+		this._lineWidth = lineWidth;
+		this._strokeStyle = strokeStyle;
+		this._padding = padding;
 		this.redraw();
 	}
 
@@ -54,7 +54,6 @@ export default class extends Texture {
 			ctx.canvas.height = this.paddingBoxHeightInPixels;
 			ctx.font = this.font;
 			ctx.textBaseline = 'middle';
-			ctx.fillStyle = 'White';
 			let left;
 			switch (this.textAlign) {
 				case 'left':
@@ -71,11 +70,14 @@ export default class extends Texture {
 					break;
 			}
 			let top = this.paddingInPixels + this.fontSize / 2;
-			ctx.strokeStyle = this.strokeStyle
-			ctx.lineWidth = this.outlineWidth
-			ctx.fillStyle = this.fillStyle
+			ctx.fillStyle = this.fillStyle;
+			ctx.miterLimit = 1;
+			ctx.lineWidth = this.lineWidthInPixels;
+			ctx.strokeStyle = this.strokeStyle;
 			this.lines.forEach(line => {
-				ctx.strokeText(line, left, top)
+				if (this.lineWidth) {
+					ctx.strokeText(line, left, top);
+				}
 				ctx.fillText(line, left, top);
 				top += this.lineHeightInPixels;
 			});
@@ -207,6 +209,43 @@ export default class extends Texture {
 		);
 	}
 
+	get fillStyle() {
+		return this._fillStyle;
+	}
+
+	set fillStyle(value) {
+		if(this._fillStyle !== value) {
+			this._fillStyle = value;
+			this._redrawIfAuto();
+		}
+	}
+
+	get lineWidth() {
+		return this._lineWidth;
+	}
+
+	set lineWidth(value) {
+		if(this._lineWidth !== value) {
+			this._lineWidth = value;
+			this._redrawIfAuto();
+		}
+	}
+
+	get lineWidthInPixels() {
+		return this._lineWidth * this.fontSize;
+	}
+
+	get strokeStyle() {
+		return this._strokeStyle;
+	}
+
+	set strokeStyle(value) {
+		if(this._strokeStyle !== value) {
+			this._strokeStyle = value;
+			this._redrawIfAuto();
+		}
+	}
+
 	get textBoxWidthInPixels() {
 		if (Lang_isUndefined(this._textBoxWidthInPixels)) {
 			this._textBoxWidthInPixels = getTextBoxWidth(
@@ -222,7 +261,7 @@ export default class extends Texture {
 	}
 
 	get textBoxHeightInPixels() {
-		return this.fontSize * this.textBoxHeight;
+		return this.textBoxHeight * this.fontSize;
 	}
 
 	get padding() {
@@ -236,41 +275,8 @@ export default class extends Texture {
 		}
 	}
 
-	set strokeStyle(value) {
-		if(this._strokeStyle !== value) {
-			this._strokeStyle = value;
-			this._redrawIfAuto();
-		}
-	}
-
-	get strokeStyle() {
-		return this._strokeStyle
-	}
-
-	set fillStyle(value) {
-		if(this._fillStyle !== value) {
-			this._fillStyle = value;
-			this._redrawIfAuto();
-		}
-	}
-
-	get fillStyle() {
-		return this._fillStyle
-	}
-
-	set outlineWidth(value) {
-		if(this._outlineWidth !== value) {
-			this._outlineWidth = value;
-			this._redrawIfAuto();
-		}
-	}
-
-	get outlineWidth() {
-		return this._outlineWidth
-	}
-
 	get paddingInPixels() {
-		return this.fontSize * this.padding;
+		return this.padding * this.fontSize;
 	}
 
 	get paddingBoxWidthInPixels() {
@@ -282,7 +288,7 @@ export default class extends Texture {
 	}
 
 	get paddingBoxHeightInPixels() {
-		return this.textBoxHeightInPixels + 2 * this.paddingInPixels;
+		return this.paddingBoxHeight * this.fontSize;
 	}
 
 	get aspect() {

@@ -24,13 +24,6 @@
 		'normal',
 		'italic',
 	];
-	var strokeStyleValues = [
-		'red',
-		'blue',
-		'green',
-		'pink',
-		'greem',
-	]
 
 	Promise.all(fontFamilyValues.map(function(fontFamily) {
 		return (new FontFaceObserver(fontFamily)).load();
@@ -39,7 +32,7 @@
 		.then(function() {
 
 			var renderer = new THREE.WebGLRenderer({antialias: true});
-			renderer.setClearColor(0x588c7e);
+			renderer.setClearColor(0x19984b);
 			document.body.appendChild(renderer.domElement);
 
 			var scene = new THREE.Scene();
@@ -60,12 +53,12 @@
 				fontWeight: fontWeightValues[0],
 				fontVariant: fontVariantValues[0],
 				fontStyle: fontStyleValues[0],
-				strokeStyle: strokeStyleValues[0],
-				outlineWidth:2,
+				fillStyle: '#e59500',
+				lineWidth: 1/10,
+				strokeStyle: '#840032',
 			});
 			var material = new THREE.MeshBasicMaterial({
 				map: texture,
-				color: 0xf2e394,
 				transparent: true,
 			});
 			var geometry = new THREE.PlaneGeometry(4, 4, 4);
@@ -83,7 +76,6 @@
 				var x = 1/800;
 				var y = 1/600;
 				var z = 1/400;
-
 				return function() {
 					mesh.rotation.x += (x = nextStep(x, mesh.rotation.x, -1/7, 1/3));
 					mesh.rotation.y += (y = nextStep(y, mesh.rotation.y, -1/7, 1/3));
@@ -122,8 +114,9 @@
 				guiFolder.add(texture, 'textAlign', textAlignValues);
 				guiFolder.add(texture, 'lineHeight', 0, 3, 1/20);
 				guiFolder.add(texture, 'padding', 0, 1, 1/20);
-				guiFolder.add(texture, 'strokeStyle', strokeStyleValues);
-				guiFolder.add(texture, 'outlineWidth', 0, 10, 0.5);
+				guiFolder.addColor(texture, 'fillStyle');
+				guiFolder.add(texture, 'lineWidth', 0, 1/4, 1/20);
+				guiFolder.addColor(texture, 'strokeStyle');
 				guiFolder.open();
 			})();
 			(function() {

@@ -37,7 +37,7 @@ The class `TextTexture` will be available under the namespace `THREE`.
 
 ## members
 
-`.constructor({autoRedraw, text, textAlign, lineHeight, fontFamily, fontSize, fontWeight, fontVariant, fontStyle, padding, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy})`
+`.constructor({autoRedraw, text, textAlign, lineHeight, fontFamily, fontSize, fontWeight, fontVariant, fontStyle, fillStyle, lineWidth, strokeStyle, padding, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy})`
 
 ```javascript
 let texture = new THREE.TextTexture({
@@ -45,8 +45,6 @@ let texture = new THREE.TextTexture({
   fontFamily: '"Times New Roman", Times, serif',
   fontSize: 32,
   fontStyle: 'italic',
-  strokeStyle: 'orange',
-  outlineWidth: 2,
 });
 let material = new THREE.SpriteMaterial({map: texture, color: 0xffffbb});
 let sprite = new THREE.Sprite(material);
@@ -136,29 +134,35 @@ The combined font properties.
 
 ---
 
-`.padding = 0.25`
+`.fillStyle = 'White'`
 
-The space around the text inside the canvas. The pixels are calculated relative to the font size.
+The color or style to use inside shapes.
 
 Changing the value will redraw the canvas if `autoRedraw` is `true`.
 
 ---
 
-`strokeStyle = 'black`
+`.lineWidth = 0`
 
-The color of the outline
+The thickness of lines. The pixels are calculated relative to the font size.
 
----
-
-`outlineWidth = 0`
-
-The width of the outline
+Changing the value will redraw the canvas if `autoRedraw` is `true`.
 
 ---
 
-`fillStyle = 'white'`
+`.strokeStyle = 'Black'`
 
-This is the base color of the text before the material color
+The color or style to use for the lines around shapes.
+
+Changing the value will redraw the canvas if `autoRedraw` is `true`.
+
+---
+
+`.padding = 0.25`
+
+The space around the text inside the canvas. The pixels are calculated relative to the font size.
+
+Changing the value will redraw the canvas if `autoRedraw` is `true`.
 
 ---
 
