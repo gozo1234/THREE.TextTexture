@@ -37,7 +37,7 @@ The class `TextTexture` will be available under the namespace `THREE`.
 
 ## members
 
-`.constructor({autoRedraw, text, textAlign, lineHeight, fontFamily, fontSize, fontWeight, fontVariant, fontStyle, fillStyle, lineWidth, strokeStyle, padding, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy})`
+`.constructor({autoRedraw, text, textAlign, textLineHeight, fontFamily, fontSize, fontWeight, fontVariant, fontStyle, fillStyle, lineWidth, strokeStyle, padding, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy})`
 
 ```javascript
 let texture = new THREE.TextTexture({
@@ -64,13 +64,13 @@ Changing the value will redraw the canvas if `autoRedraw` is `true`.
 
 `.textAlign = 'center'`
 
-The horizontal alignment of the text lines. Possible values are `'center'`, `'left'` and `'right'`.
+The horizontal alignment of the text. Possible values are `'center'`, `'left'` and `'right'`.
 
 Changing the value will redraw the canvas if `autoRedraw` is `true`.
 
 ---
 
-`.lines`
+`.textLines`
 
 *read-only*
 
@@ -78,7 +78,7 @@ The text split by the new line character.
 
 ---
 
-`.lineHeight = 1.15`
+`.textLineHeight = 1.15`
 
 The height of a text line. The pixels are calculated relative to the font size.
 

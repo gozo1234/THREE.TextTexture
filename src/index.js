@@ -7,7 +7,7 @@ import Document_createCanvas from '/utils/Document/createCanvas';
 import Lang_isUndefined from '/utils/Lang/isUndefined';
 
 import getFont from './getFont';
-import getLines from './getLines';
+import getTextLines from './getTextLines';
 import getTextBoxWidth from './getTextBoxWidth';
 
 export default class extends Texture {
@@ -15,7 +15,7 @@ export default class extends Texture {
 		autoRedraw = true,
 		text = '',
 		textAlign = 'center',
-		lineHeight = 1.15,
+		textLineHeight = 1.15,
 		fontFamily = 'sans-serif',
 		fontSize = 16,
 		fontWeight = 'normal',
@@ -33,7 +33,7 @@ export default class extends Texture {
 		this.autoRedraw = autoRedraw;
 		this._text = text;
 		this._textAlign = textAlign;
-		this._lineHeight = lineHeight;
+		this._textLineHeight = textLineHeight;
 		this._fontFamily = fontFamily;
 		this._fontSize = fontSize;
 		this._fontWeight = fontWeight;
@@ -74,12 +74,12 @@ export default class extends Texture {
 			ctx.miterLimit = 1;
 			ctx.lineWidth = this.lineWidthInPixels;
 			ctx.strokeStyle = this.strokeStyle;
-			this.lines.forEach(line => {
+			this.textLines.forEach(text => {
 				if (this.lineWidth) {
-					ctx.strokeText(line, left, top);
+					ctx.strokeText(text, left, top);
 				}
-				ctx.fillText(line, left, top);
-				top += this.lineHeightInPixels;
+				ctx.fillText(text, left, top);
+				top += this.textLineHeightInPixels;
 			});
 		} else {
 			ctx.canvas.width = ctx.canvas.height = 1;
@@ -100,7 +100,7 @@ export default class extends Texture {
 	set text(value) {
 		if (this._text !== value) {
 			this._text = value;
-			this._lines = undefined;
+			this._textLines = undefined;
 			this._textBoxWidthInPixels = undefined;
 			this._redrawIfAuto();
 		}
@@ -117,26 +117,26 @@ export default class extends Texture {
 		}
 	}
 
-	get lines() {
-		if (Lang_isUndefined(this._lines)) {
-			this._lines = getLines(this.text);
+	get textLines() {
+		if (Lang_isUndefined(this._textLines)) {
+			this._textLines = getTextLines(this.text);
 		}
-		return this._lines;
+		return this._textLines;
 	}
 
-	get lineHeight() {
-		return this._lineHeight;
+	get textLineHeight() {
+		return this._textLineHeight;
 	}
 
-	set lineHeight(value) {
-		if (this._lineHeight !== value) {
-			this._lineHeight = value;
+	set textLineHeight(value) {
+		if (this._textLineHeight !== value) {
+			this._textLineHeight = value;
 			this._redrawIfAuto();
 		}
 	}
 
-	get lineHeightInPixels() {
-		return this.fontSize * this.lineHeight;
+	get textLineHeightInPixels() {
+		return this.fontSize * this.textLineHeight;
 	}
 
 	get fontFamily() {
@@ -249,7 +249,7 @@ export default class extends Texture {
 	get textBoxWidthInPixels() {
 		if (Lang_isUndefined(this._textBoxWidthInPixels)) {
 			this._textBoxWidthInPixels = getTextBoxWidth(
-				this.lines,
+				this.textLines,
 				this.font,
 			);
 		}
@@ -257,7 +257,7 @@ export default class extends Texture {
 	}
 
 	get textBoxHeight() {
-		return this.lineHeight * (this.lines.length - 1) + 1;
+		return this.textLineHeight * (this.textLines.length - 1) + 1;
 	}
 
 	get textBoxHeightInPixels() {
