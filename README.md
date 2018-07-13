@@ -48,7 +48,7 @@ let texture = new THREE.TextTexture({
 });
 let material = new THREE.SpriteMaterial({map: texture, color: 0xffffbb});
 let sprite = new THREE.Sprite(material);
-sprite.scale.setX(texture.aspect).multiplyScalar(10);
+sprite.scale.setX(texture.imageAspect).multiplyScalar(10);
 scene.add(sprite);
 ```
 
@@ -189,7 +189,7 @@ texture.autoRedraw = true;
 
 ---
 
-`.aspect`
+`.imageAspect`
 
 *read-only*
 

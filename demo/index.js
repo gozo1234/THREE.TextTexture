@@ -66,7 +66,7 @@
 			scene.add(mesh);
 
 			var updateMeshScale = function() {
-				mesh.scale.set(1, 1/material.map.aspect, 1);
+				mesh.scale.set(1, 1/material.map.imageAspect, 1);
 			};
 
 			var rotateMesh = (function() {

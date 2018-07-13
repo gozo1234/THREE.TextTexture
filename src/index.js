@@ -50,8 +50,8 @@ export default class extends Texture {
 		let ctx = this.image.getContext('2d');
 		ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 		if (this.textBoxWidthInPixels && this.textBoxHeightInPixels) {
-			ctx.canvas.width = this.paddingBoxWidthInPixels;
-			ctx.canvas.height = this.paddingBoxHeightInPixels;
+			ctx.canvas.width = this.imageWidthInPixels;
+			ctx.canvas.height = this.imageHeightInPixels;
 			ctx.font = this.font;
 			ctx.textBaseline = 'middle';
 			let left;
@@ -279,19 +279,19 @@ export default class extends Texture {
 		return this.padding * this.fontSize;
 	}
 
-	get paddingBoxWidthInPixels() {
+	get imageWidthInPixels() {
 		return this.textBoxWidthInPixels + 2 * this.paddingInPixels;
 	}
 
-	get paddingBoxHeight() {
+	get imageHeight() {
 		return this.textBoxHeight + 2 * this.padding;
 	}
 
-	get paddingBoxHeightInPixels() {
-		return this.paddingBoxHeight * this.fontSize;
+	get imageHeightInPixels() {
+		return this.imageHeight * this.fontSize;
 	}
 
-	get aspect() {
+	get imageAspect() {
 		if (this.image.width && this.image.height) {
 			return this.image.width / this.image.height;
 		}
