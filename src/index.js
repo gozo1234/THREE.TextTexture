@@ -58,18 +58,18 @@ export default class extends Texture {
 			switch (this.textAlign) {
 				case 'left':
 					ctx.textAlign = 'left';
-					left = this.paddingInPixels;
+					left = this.paddingInPixels + this.lineWidthInPixels / 2;
 					break;
 				case 'right':
 					ctx.textAlign = 'right';
-					left = this.paddingInPixels + this.textBoxWidthInPixels;
+					left = this.paddingInPixels + this.lineWidthInPixels / 2 + this.textBoxWidthInPixels;
 					break;
 				case 'center':
 					ctx.textAlign = 'center';
-					left = this.paddingInPixels + this.textBoxWidthInPixels / 2;
+					left = this.paddingInPixels + this.lineWidthInPixels / 4 + this.textBoxWidthInPixels / 2;
 					break;
 			}
-			let top = this.paddingInPixels + this.fontSize / 2;
+			let top = this.paddingInPixels + this.lineWidthInPixels / 2 + this.fontSize / 2;
 			ctx.fillStyle = this.fillStyle;
 			ctx.miterLimit = 1;
 			ctx.lineWidth = this.lineWidthInPixels;
@@ -280,11 +280,11 @@ export default class extends Texture {
 	}
 
 	get imageWidthInPixels() {
-		return this.textBoxWidthInPixels + 2 * this.paddingInPixels;
+		return this.textBoxWidthInPixels + this.lineWidthInPixels + this.paddingInPixels * 2;
 	}
 
 	get imageHeight() {
-		return this.textBoxHeight + 2 * this.padding;
+		return this.textBoxHeight + this.lineWidth + this.padding * 2;
 	}
 
 	get imageHeightInPixels() {
