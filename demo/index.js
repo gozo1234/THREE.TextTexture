@@ -25,13 +25,15 @@
 		'italic',
 	];
 
-	Promise.all(fontFamilyValues.map(function(fontFamily) {
-		return (new FontFaceObserver(fontFamily)).load();
-	}))
+	Promise
+		.all(fontFamilyValues.map(function(fontFamily) {
+			return (new FontFaceObserver(fontFamily)).load();
+		}))
 		.catch(function() {})
 		.then(function() {
 
 			var renderer = new THREE.WebGLRenderer({antialias: true});
+			renderer.setPixelRatio(devicePixelRatio);
 			renderer.setClearColor(0x19984b);
 			document.body.appendChild(renderer.domElement);
 
@@ -41,6 +43,7 @@
 			camera.position.set(0, 0, 3);
 
 			var texture = new THREE.TextTexture({
+				pixelRatio: devicePixelRatio,
 				text: [
 					'Twinkle, twinkle, little star,',
 					'How I wonder what you are!',

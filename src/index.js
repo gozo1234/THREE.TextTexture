@@ -13,6 +13,7 @@ import getTextBoxWidth from './getTextBoxWidth';
 export default class extends Texture {
 	constructor({
 		autoRedraw = true,
+		pixelRatio = 1,
 		text = '',
 		textAlign = 'center',
 		textLineHeight = 1.15,
@@ -31,6 +32,7 @@ export default class extends Texture {
 	} = {}) {
 		super(Document_createCanvas(), mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy);
 		this.autoRedraw = autoRedraw;
+		this._pixelRatio = pixelRatio;
 		this._text = text;
 		this._textAlign = textAlign;
 		this._textLineHeight = textLineHeight;
@@ -50,8 +52,11 @@ export default class extends Texture {
 		let ctx = this.image.getContext('2d');
 		ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 		if (this.textBoxWidthInPixels && this.textBoxHeightInPixels) {
-			ctx.canvas.width = this.imageWidthInPixels;
-			ctx.canvas.height = this.imageHeightInPixels;
+			ctx.canvas.width = this.imageWidthInPixels * this.pixelRatio;
+			ctx.canvas.height = this.imageHeightInPixels * this.pixelRatio;
+			ctx.canvas.style.width = `${this.imageWidthInPixels}px`;
+			ctx.canvas.style.height = `${this.imageHeightInPixels}px`;
+			ctx.scale(this.pixelRatio, this.pixelRatio);
 			ctx.font = this.font;
 			ctx.textBaseline = 'middle';
 			let left;
@@ -90,6 +95,17 @@ export default class extends Texture {
 	_redrawIfAuto() {
 		if (this.autoRedraw) {
 			this.redraw();
+		}
+	}
+
+	get pixelRatio() {
+		return this._pixelRatio;
+	}
+
+	set pixelRatio(value) {
+		if (this._pixelRatio !== value) {
+			this._pixelRatio = value;
+			this._redrawIfAuto();
 		}
 	}
 
@@ -214,7 +230,7 @@ export default class extends Texture {
 	}
 
 	set fillStyle(value) {
-		if(this._fillStyle !== value) {
+		if (this._fillStyle !== value) {
 			this._fillStyle = value;
 			this._redrawIfAuto();
 		}
@@ -225,7 +241,7 @@ export default class extends Texture {
 	}
 
 	set lineWidth(value) {
-		if(this._lineWidth !== value) {
+		if (this._lineWidth !== value) {
 			this._lineWidth = value;
 			this._redrawIfAuto();
 		}
@@ -240,7 +256,7 @@ export default class extends Texture {
 	}
 
 	set strokeStyle(value) {
-		if(this._strokeStyle !== value) {
+		if (this._strokeStyle !== value) {
 			this._strokeStyle = value;
 			this._redrawIfAuto();
 		}
