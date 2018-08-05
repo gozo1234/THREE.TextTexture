@@ -8,7 +8,7 @@ import Lang_isUndefined from '/utils/Lang/isUndefined';
 
 import getFont from './getFont';
 import getTextLines from './getTextLines';
-import getTextBoxWidth from './getTextBoxWidth';
+import getTextWidth from './getTextWidth';
 
 export default class extends Texture {
 	constructor({
@@ -28,9 +28,24 @@ export default class extends Texture {
 		padding = 0.25,
 		magFilter = LinearFilter,
 		minFilter = LinearFilter,
-		mapping, wrapS, wrapT, format, type, anisotropy,
+		mapping,
+		wrapS,
+		wrapT,
+		format,
+		type,
+		anisotropy,
 	} = {}) {
-		super(Document_createCanvas(), mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy);
+		super(
+			Document_createCanvas(),
+			mapping,
+			wrapS,
+			wrapT,
+			magFilter,
+			minFilter,
+			format,
+			type,
+			anisotropy,
+		);
 		this.autoRedraw = autoRedraw;
 		this._pixelRatio = pixelRatio;
 		this._text = text;
@@ -51,7 +66,7 @@ export default class extends Texture {
 	redraw() {
 		let ctx = this.image.getContext('2d');
 		ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-		if (this.textBoxWidthInPixels && this.textBoxHeightInPixels) {
+		if (this.textWidthInPixels && this.textHeightInPixels) {
 			ctx.canvas.width = this.imageWidthInPixels * this.pixelRatio;
 			ctx.canvas.height = this.imageHeightInPixels * this.pixelRatio;
 			ctx.canvas.style.width = `${this.imageWidthInPixels}px`;
@@ -67,11 +82,11 @@ export default class extends Texture {
 					break;
 				case 'right':
 					ctx.textAlign = 'right';
-					left = this.paddingInPixels + this.lineWidthInPixels / 2 + this.textBoxWidthInPixels;
+					left = this.paddingInPixels + this.lineWidthInPixels / 2 + this.textWidthInPixels;
 					break;
 				case 'center':
 					ctx.textAlign = 'center';
-					left = this.paddingInPixels + this.lineWidthInPixels / 4 + this.textBoxWidthInPixels / 2;
+					left = this.paddingInPixels + this.lineWidthInPixels / 4 + this.textWidthInPixels / 2;
 					break;
 			}
 			let top = this.paddingInPixels + this.lineWidthInPixels / 2 + this.fontSize / 2;
@@ -117,7 +132,7 @@ export default class extends Texture {
 		if (this._text !== value) {
 			this._text = value;
 			this._textLines = undefined;
-			this._textBoxWidthInPixels = undefined;
+			this._textWidthInPixels = undefined;
 			this._redrawIfAuto();
 		}
 	}
@@ -162,7 +177,7 @@ export default class extends Texture {
 	set fontFamily(value) {
 		if (this._fontFamily !== value) {
 			this._fontFamily = value;
-			this._textBoxWidthInPixels = undefined;
+			this._textWidthInPixels = undefined;
 			this._redrawIfAuto();
 		}
 	}
@@ -174,7 +189,7 @@ export default class extends Texture {
 	set fontSize(value) {
 		if (this._fontSize !== value) {
 			this._fontSize = value;
-			this._textBoxWidthInPixels = undefined;
+			this._textWidthInPixels = undefined;
 			this._redrawIfAuto();
 		}
 	}
@@ -186,7 +201,7 @@ export default class extends Texture {
 	set fontWeight(value) {
 		if (this._fontWeight !== value) {
 			this._fontWeight = value;
-			this._textBoxWidthInPixels = undefined;
+			this._textWidthInPixels = undefined;
 			this._redrawIfAuto();
 		}
 	}
@@ -198,7 +213,7 @@ export default class extends Texture {
 	set fontVariant(value) {
 		if (this._fontVariant !== value) {
 			this._fontVariant = value;
-			this._textBoxWidthInPixels = undefined;
+			this._textWidthInPixels = undefined;
 			this._redrawIfAuto();
 		}
 	}
@@ -210,7 +225,7 @@ export default class extends Texture {
 	set fontStyle(value) {
 		if (this._fontStyle !== value) {
 			this._fontStyle = value;
-			this._textBoxWidthInPixels = undefined;
+			this._textWidthInPixels = undefined;
 			this._redrawIfAuto();
 		}
 	}
@@ -262,22 +277,22 @@ export default class extends Texture {
 		}
 	}
 
-	get textBoxWidthInPixels() {
-		if (Lang_isUndefined(this._textBoxWidthInPixels)) {
-			this._textBoxWidthInPixels = getTextBoxWidth(
+	get textWidthInPixels() {
+		if (Lang_isUndefined(this._textWidthInPixels)) {
+			this._textWidthInPixels = getTextWidth(
 				this.textLines,
 				this.font,
 			);
 		}
-		return this._textBoxWidthInPixels;
+		return this._textWidthInPixels;
 	}
 
-	get textBoxHeight() {
+	get textHeight() {
 		return this.textLineHeight * (this.textLines.length - 1) + 1;
 	}
 
-	get textBoxHeightInPixels() {
-		return this.textBoxHeight * this.fontSize;
+	get textHeightInPixels() {
+		return this.textHeight * this.fontSize;
 	}
 
 	get padding() {
@@ -296,11 +311,11 @@ export default class extends Texture {
 	}
 
 	get imageWidthInPixels() {
-		return this.textBoxWidthInPixels + this.lineWidthInPixels + this.paddingInPixels * 2;
+		return this.textWidthInPixels + this.lineWidthInPixels + this.paddingInPixels * 2;
 	}
 
 	get imageHeight() {
-		return this.textBoxHeight + this.lineWidth + this.padding * 2;
+		return this.textHeight + this.lineWidth + this.padding * 2;
 	}
 
 	get imageHeightInPixels() {
