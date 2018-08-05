@@ -13,7 +13,6 @@ import getTextWidth from './getTextWidth';
 export default class extends Texture {
 	constructor({
 		autoRedraw = true,
-		pixelRatio = 1,
 		text = '',
 		textAlign = 'center',
 		textLineHeight = 1.15,
@@ -47,7 +46,6 @@ export default class extends Texture {
 			anisotropy,
 		);
 		this.autoRedraw = autoRedraw;
-		this._pixelRatio = pixelRatio;
 		this._text = text;
 		this._textAlign = textAlign;
 		this._textLineHeight = textLineHeight;
@@ -67,11 +65,8 @@ export default class extends Texture {
 		let ctx = this.image.getContext('2d');
 		ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 		if (this.textWidthInPixels && this.textHeightInPixels) {
-			ctx.canvas.width = this.imageWidthInPixels * this.pixelRatio;
-			ctx.canvas.height = this.imageHeightInPixels * this.pixelRatio;
-			ctx.canvas.style.width = `${this.imageWidthInPixels}px`;
-			ctx.canvas.style.height = `${this.imageHeightInPixels}px`;
-			ctx.scale(this.pixelRatio, this.pixelRatio);
+			ctx.canvas.width = this.imageWidthInPixels;
+			ctx.canvas.height = this.imageHeightInPixels;
 			ctx.font = this.font;
 			ctx.textBaseline = 'middle';
 			let left;
@@ -110,17 +105,6 @@ export default class extends Texture {
 	_redrawIfAuto() {
 		if (this.autoRedraw) {
 			this.redraw();
-		}
-	}
-
-	get pixelRatio() {
-		return this._pixelRatio;
-	}
-
-	set pixelRatio(value) {
-		if (this._pixelRatio !== value) {
-			this._pixelRatio = value;
-			this._redrawIfAuto();
 		}
 	}
 

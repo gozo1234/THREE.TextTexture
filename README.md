@@ -37,11 +37,10 @@ The class `TextTexture` will be available under the namespace `THREE`.
 
 ## members
 
-`.constructor({autoRedraw, pixelRatio, text, textAlign, textLineHeight, fontFamily, fontSize, fontWeight, fontVariant, fontStyle, fillStyle, lineWidth, strokeStyle, padding, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy})`
+`.constructor({autoRedraw, text, textAlign, textLineHeight, fontFamily, fontSize, fontWeight, fontVariant, fontStyle, fillStyle, lineWidth, strokeStyle, padding, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy})`
 
 ```javascript
 let texture = new THREE.TextTexture({
-  pixelRatio: devicePixelRatio,
   text: 'Carpe Diem',
   fontFamily: '"Times New Roman", Times, serif',
   fontSize: 32,
@@ -52,14 +51,6 @@ let sprite = new THREE.Sprite(material);
 sprite.scale.setX(texture.imageAspect).multiplyScalar(10);
 scene.add(sprite);
 ```
-
----
-
-`.pixelRatio = 1`
-
-the device pixel ratio.
-
-Changing the value will redraw the canvas if `autoRedraw` is `true`.
 
 ---
 

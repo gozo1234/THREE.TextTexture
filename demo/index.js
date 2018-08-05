@@ -43,7 +43,6 @@
 			camera.position.set(0, 0, 3);
 
 			var texture = new THREE.TextTexture({
-				pixelRatio: devicePixelRatio,
 				text: [
 					'Twinkle, twinkle, little star,',
 					'How I wonder what you are!',
