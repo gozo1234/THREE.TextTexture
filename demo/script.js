@@ -24,24 +24,19 @@
 		'normal',
 		'italic',
 	];
-
 	Promise
 		.all(fontFamilyValues.map(function(fontFamily) {
 			return (new FontFaceObserver(fontFamily)).load();
 		}))
 		.catch(function() {})
 		.then(function() {
-
 			var renderer = new THREE.WebGLRenderer({antialias: true});
 			renderer.setPixelRatio(devicePixelRatio);
 			renderer.setClearColor(0x19984b);
 			document.body.appendChild(renderer.domElement);
-
 			var scene = new THREE.Scene();
-
 			var camera = new THREE.PerspectiveCamera(75, 1);
 			camera.position.set(0, 0, 3);
-
 			var texture = new THREE.TextTexture({
 				text: [
 					'Twinkle, twinkle, little star,',
@@ -66,11 +61,9 @@
 			var geometry = new THREE.PlaneGeometry(4, 4, 4);
 			var mesh = new THREE.Mesh(geometry, material);
 			scene.add(mesh);
-
 			var updateMeshScale = function() {
 				mesh.scale.set(1, 1/material.map.imageAspect, 1);
 			};
-
 			var rotateMesh = (function() {
 				var nextStep = function(step, value, minValue, maxValue) {
 					return step * ((value < minValue || value > maxValue) ? -1 : 1);
@@ -84,7 +77,6 @@
 					mesh.rotation.z += (z = nextStep(z, mesh.rotation.z, -1/7, 1/3));
 				};
 			})();
-
 			var renderScene = function() {
 				rotateMesh();
 				updateMeshScale();
@@ -93,9 +85,7 @@
 				camera.updateProjectionMatrix();
 				renderer.render(scene, camera);
 			};
-
 			window.addEventListener('resize', renderScene, false);
-
 			var startSceneRenderer = function() {
 				requestAnimationFrame(function() {
 					setTimeout(startSceneRenderer, 1000/60);
@@ -103,11 +93,9 @@
 				renderScene();
 			};
 			startSceneRenderer();
-
 			var gui = new dat.GUI();
 			(function() {
 				var guiFolder = gui.addFolder('texture');
-				//guiFolder.add(texture, 'text', 'multiline');
 				guiFolder.add(texture, 'fontStyle', fontStyleValues);
 				guiFolder.add(texture, 'fontVariant', fontVariantValues);
 				guiFolder.add(texture, 'fontWeight', fontWeightValues);
@@ -126,7 +114,6 @@
 				guiFolder.add(material, 'transparent');
 				guiFolder.open();
 			})();
-
 			var settings = QuickSettings.create(16, 16, ' ');
 			settings.bindTextArea('text', texture['text'], texture);
 		});
