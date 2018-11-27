@@ -33,7 +33,8 @@ The class `TextTexture` will be available under the namespace `THREE`.
 
 ## members
 
-`.constructor({
+```
+.constructor({
   anisotropy,
   autoRedraw,
   fillStyle,
@@ -55,7 +56,8 @@ The class `TextTexture` will be available under the namespace `THREE`.
   type,
   wrapS,
   wrapT,
-})`
+})
+```
 
 ```javascript
 let texture = new THREE.TextTexture({
