@@ -33,14 +33,36 @@ The class `TextTexture` will be available under the namespace `THREE`.
 
 ## members
 
-`.constructor({autoRedraw, text, textAlign, textLineHeight, fontFamily, fontSize, fontWeight, fontVariant, fontStyle, fillStyle, lineWidth, strokeStyle, padding, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy})`
+`.constructor({
+  anisotropy,
+  autoRedraw,
+  fillStyle,
+  fontFamily,
+  fontSize,
+  fontStyle,
+  fontVariant,
+  fontWeight,
+  format,
+  lineWidth,
+  magFilter,
+  mapping,
+  minFilter,
+  padding,
+  strokeStyle,
+  text,
+  textAlign,
+  textLineHeight,
+  type,
+  wrapS,
+  wrapT,
+})`
 
 ```javascript
 let texture = new THREE.TextTexture({
-  text: 'Carpe Diem',
   fontFamily: '"Times New Roman", Times, serif',
   fontSize: 32,
   fontStyle: 'italic',
+  text: 'Carpe Diem',
 });
 let material = new THREE.SpriteMaterial({map: texture, color: 0xffffbb});
 let sprite = new THREE.Sprite(material);
