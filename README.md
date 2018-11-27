@@ -8,10 +8,6 @@ An instance of `TextTexture` is a texture for writing the text.
 
 [Try it out!](https://seregpie.github.io/THREE.TextTexture/)
 
-## dependencies
-
-- [THREE](https://github.com/mrdoob/three.js)
-
 ## setup
 
 ### npm
