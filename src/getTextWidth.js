@@ -1,5 +1,5 @@
-import Array_max from '/utils/Array/max';
-import Document_createCanvas from '/utils/Document/createCanvas';
+import Array_max from './utils/Array/max';
+import Document_createCanvas from './utils/Document/createCanvas';
 
 export default function(textLines, font) {
 	if (textLines.length) {

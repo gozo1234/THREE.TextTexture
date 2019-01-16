@@ -3,8 +3,8 @@ import {
 	Texture,
 } from 'three';
 
-import Document_createCanvas from '/utils/Document/createCanvas';
-import Lang_isUndefined from '/utils/Lang/isUndefined';
+import Document_createCanvas from './utils/Document/createCanvas';
+import Lang_isUndefined from './utils/Lang/isUndefined';
 
 import getFont from './getFont';
 import getTextLines from './getTextLines';
