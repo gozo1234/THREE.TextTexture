@@ -1,7 +1,6 @@
+import {terser} from 'rollup-plugin-terser';
 import buble from 'rollup-plugin-buble';
-import minify from 'rollup-plugin-babel-minify';
 import path from 'path';
-import resolve from '@seregpie/rollup-plugin-resolve';
 
 import {main} from './package.json';
 
@@ -19,8 +18,7 @@ export default {
 		globals,
 	},
 	plugins: [
-		resolve(),
 		buble(),
-		minify({comments: false}),
+		terser(),
 	],
 };
