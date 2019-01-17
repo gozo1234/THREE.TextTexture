@@ -2,7 +2,7 @@
 
 `class THREE.TextTexture extends THREE.Texture`
 
-An instance of `TextTexture` is a texture for writing the text.
+An instance of `TextTexture` is a texture for the text writing.
 
 ## demo
 
