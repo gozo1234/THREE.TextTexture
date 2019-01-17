@@ -14,7 +14,7 @@ export default class extends Texture {
 	constructor({
 		anisotropy,
 		autoRedraw = true,
-		fillStyle = 'white',
+		fillStyle = '#fff',
 		fontFamily = 'sans-serif',
 		fontSize = 16,
 		fontStyle = 'normal',
@@ -26,7 +26,7 @@ export default class extends Texture {
 		mapping,
 		minFilter = LinearFilter,
 		padding = 0.25,
-		strokeStyle = 'black',
+		strokeStyle = '#000',
 		text = '',
 		textAlign = 'center',
 		textLineHeight = 1.15,

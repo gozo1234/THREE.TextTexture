@@ -154,7 +154,7 @@ The combined font properties.
 
 ---
 
-`.fillStyle = 'White'`
+`.fillStyle = '#fff'`
 
 The color or style to use inside shapes.
 
@@ -170,7 +170,7 @@ Changing the value will redraw the canvas if `autoRedraw` is `true`.
 
 ---
 
-`.strokeStyle = 'Black'`
+`.strokeStyle = '#000'`
 
 The color or style to use for the lines around shapes.
 
