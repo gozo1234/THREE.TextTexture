@@ -4,7 +4,7 @@ import Document_createCanvas from './utils/Document/createCanvas';
 import Lang_isUndefined from './utils/Lang/isUndefined';
 
 import getFont from './getFont';
-import getTextLines from './getTextLines';
+import getLines from './getLines';
 import getTextWidth from './getTextWidth';
 
 export default class extends THREE.Texture {
@@ -86,7 +86,7 @@ export default class extends THREE.Texture {
 			ctx.miterLimit = 1;
 			ctx.lineWidth = this.strokeWidthInPixels;
 			ctx.strokeStyle = this.strokeStyle;
-			this.textLines.forEach(text => {
+			this.lines.forEach(text => {
 				if (this.strokeWidth) {
 					ctx.strokeText(text, left, top);
 				}
@@ -112,7 +112,7 @@ export default class extends THREE.Texture {
 	set text(value) {
 		if (this._text !== value) {
 			this._text = value;
-			this._textLines = undefined;
+			this._lines = undefined;
 			this._textWidthInPixels = undefined;
 			this._redrawIfAuto();
 		}
@@ -129,11 +129,11 @@ export default class extends THREE.Texture {
 		}
 	}
 
-	get textLines() {
-		if (Lang_isUndefined(this._textLines)) {
-			this._textLines = getTextLines(this.text);
+	get lines() {
+		if (Lang_isUndefined(this._lines)) {
+			this._lines = getLines(this.text);
 		}
-		return this._textLines;
+		return this._lines;
 	}
 
 	get textLineHeight() {
@@ -261,7 +261,7 @@ export default class extends THREE.Texture {
 	get textWidthInPixels() {
 		if (Lang_isUndefined(this._textWidthInPixels)) {
 			this._textWidthInPixels = getTextWidth(
-				this.textLines,
+				this.lines,
 				this.font,
 			);
 		}
@@ -269,7 +269,7 @@ export default class extends THREE.Texture {
 	}
 
 	get textHeight() {
-		return this.textLineHeight * (this.textLines.length - 1) + 1;
+		return this.textLineHeight * (this.lines.length - 1) + 1;
 	}
 
 	get textHeightInPixels() {

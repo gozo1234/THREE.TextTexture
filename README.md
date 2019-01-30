@@ -90,7 +90,7 @@ Changing the value will redraw the canvas if `autoRedraw` is `true`.
 
 ---
 
-`.textLines`
+`.lines`
 
 *read-only*
 
