@@ -209,7 +209,7 @@ texture.autoRedraw = true;
 
 ---
 
-`.imageAspect`
+`.aspect`
 
 *read-only*
 
