@@ -9,6 +9,7 @@ import getTextWidth from './getTextWidth';
 
 export default class extends THREE.Texture {
 	constructor({
+		align = 'center',
 		anisotropy,
 		autoRedraw = true,
 		fillStyle = '#fff',
@@ -25,7 +26,6 @@ export default class extends THREE.Texture {
 		strokeStyle = '#000',
 		strokeWidth = 0,
 		text = '',
-		align = 'center',
 		textLineHeight = 1.15,
 		type,
 		wrapS,
@@ -43,6 +43,7 @@ export default class extends THREE.Texture {
 			anisotropy,
 		);
 		this.autoRedraw = autoRedraw;
+		this._align = align;
 		this._fillStyle = fillStyle;
 		this._fontFamily = fontFamily;
 		this._fontSize = fontSize;
@@ -53,48 +54,48 @@ export default class extends THREE.Texture {
 		this._strokeStyle = strokeStyle;
 		this._strokeWidth = strokeWidth;
 		this._text = text;
-		this._align = align;
 		this._textLineHeight = textLineHeight;
 		this.redraw();
 	}
 
 	redraw() {
-		let ctx = this.image.getContext('2d');
-		ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+		let canvas = this.image;
+		let context = canvas.getContext('2d');
+		context.clearRect(0, 0, canvas.width, canvas.height);
 		if (this.textWidthInPixels && this.textHeightInPixels) {
-			ctx.canvas.width = this.widthInPixels;
-			ctx.canvas.height = this.heightInPixels;
-			ctx.font = this.font;
-			ctx.textBaseline = 'middle';
+			canvas.width = this.widthInPixels;
+			canvas.height = this.heightInPixels;
+			context.font = this.font;
+			context.textBaseline = 'middle';
 			let left;
 			switch (this.align) {
 				case 'left':
-					ctx.textAlign = 'left';
+					context.textAlign = 'left';
 					left = this.paddingInPixels + this.strokeWidthInPixels / 2;
 					break;
 				case 'right':
-					ctx.textAlign = 'right';
+					context.textAlign = 'right';
 					left = this.paddingInPixels + this.strokeWidthInPixels / 2 + this.textWidthInPixels;
 					break;
 				case 'center':
-					ctx.textAlign = 'center';
+					context.textAlign = 'center';
 					left = this.paddingInPixels + this.strokeWidthInPixels / 4 + this.textWidthInPixels / 2;
 					break;
 			}
 			let top = this.paddingInPixels + this.strokeWidthInPixels / 2 + this.fontSize / 2;
-			ctx.fillStyle = this.fillStyle;
-			ctx.miterLimit = 1;
-			ctx.lineWidth = this.strokeWidthInPixels;
-			ctx.strokeStyle = this.strokeStyle;
+			context.fillStyle = this.fillStyle;
+			context.miterLimit = 1;
+			context.lineWidth = this.strokeWidthInPixels;
+			context.strokeStyle = this.strokeStyle;
 			this.lines.forEach(text => {
 				if (this.strokeWidth) {
-					ctx.strokeText(text, left, top);
+					context.strokeText(text, left, top);
 				}
-				ctx.fillText(text, left, top);
+				context.fillText(text, left, top);
 				top += this.textLineHeightInPixels;
 			});
 		} else {
-			ctx.canvas.width = ctx.canvas.height = 1;
+			canvas.width = canvas.height = 1;
 		}
 		this.needsUpdate = true;
 	}
