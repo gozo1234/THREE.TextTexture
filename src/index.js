@@ -18,12 +18,12 @@ export default class extends THREE.Texture {
 		fontVariant = 'normal',
 		fontWeight = 'normal',
 		format,
-		lineWidth = 0,
 		magFilter = THREE.LinearFilter,
 		mapping,
 		minFilter = THREE.LinearFilter,
 		padding = 0.25,
 		strokeStyle = '#000',
+		strokeWidth = 0,
 		text = '',
 		textAlign = 'center',
 		textLineHeight = 1.15,
@@ -49,9 +49,9 @@ export default class extends THREE.Texture {
 		this._fontStyle = fontStyle;
 		this._fontVariant = fontVariant;
 		this._fontWeight = fontWeight;
-		this._lineWidth = lineWidth;
 		this._padding = padding;
 		this._strokeStyle = strokeStyle;
+		this._strokeWidth = strokeWidth;
 		this._text = text;
 		this._textAlign = textAlign;
 		this._textLineHeight = textLineHeight;
@@ -70,24 +70,24 @@ export default class extends THREE.Texture {
 			switch (this.textAlign) {
 				case 'left':
 					ctx.textAlign = 'left';
-					left = this.paddingInPixels + this.lineWidthInPixels / 2;
+					left = this.paddingInPixels + this.strokeWidthInPixels / 2;
 					break;
 				case 'right':
 					ctx.textAlign = 'right';
-					left = this.paddingInPixels + this.lineWidthInPixels / 2 + this.textWidthInPixels;
+					left = this.paddingInPixels + this.strokeWidthInPixels / 2 + this.textWidthInPixels;
 					break;
 				case 'center':
 					ctx.textAlign = 'center';
-					left = this.paddingInPixels + this.lineWidthInPixels / 4 + this.textWidthInPixels / 2;
+					left = this.paddingInPixels + this.strokeWidthInPixels / 4 + this.textWidthInPixels / 2;
 					break;
 			}
-			let top = this.paddingInPixels + this.lineWidthInPixels / 2 + this.fontSize / 2;
+			let top = this.paddingInPixels + this.strokeWidthInPixels / 2 + this.fontSize / 2;
 			ctx.fillStyle = this.fillStyle;
 			ctx.miterLimit = 1;
-			ctx.lineWidth = this.lineWidthInPixels;
+			ctx.lineWidth = this.strokeWidthInPixels;
 			ctx.strokeStyle = this.strokeStyle;
 			this.textLines.forEach(text => {
-				if (this.lineWidth) {
+				if (this.strokeWidth) {
 					ctx.strokeText(text, left, top);
 				}
 				ctx.fillText(text, left, top);
@@ -232,19 +232,19 @@ export default class extends THREE.Texture {
 		}
 	}
 
-	get lineWidth() {
-		return this._lineWidth;
+	get strokeWidth() {
+		return this._strokeWidth;
 	}
 
-	set lineWidth(value) {
-		if (this._lineWidth !== value) {
-			this._lineWidth = value;
+	set strokeWidth(value) {
+		if (this._strokeWidth !== value) {
+			this._strokeWidth = value;
 			this._redrawIfAuto();
 		}
 	}
 
-	get lineWidthInPixels() {
-		return this._lineWidth * this.fontSize;
+	get strokeWidthInPixels() {
+		return this._strokeWidth * this.fontSize;
 	}
 
 	get strokeStyle() {
@@ -292,11 +292,11 @@ export default class extends THREE.Texture {
 	}
 
 	get widthInPixels() {
-		return this.textWidthInPixels + this.lineWidthInPixels + this.paddingInPixels * 2;
+		return this.textWidthInPixels + this.strokeWidthInPixels + this.paddingInPixels * 2;
 	}
 
 	get height() {
-		return this.textHeight + this.lineWidth + this.padding * 2;
+		return this.textHeight + this.strokeWidth + this.padding * 2;
 	}
 
 	get heightInPixels() {

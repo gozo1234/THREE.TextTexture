@@ -44,12 +44,12 @@ The class `TextTexture` will be available under the namespace `THREE`.
   fontVariant,
   fontWeight,
   format,
-  lineWidth,
   magFilter,
   mapping,
   minFilter,
   padding,
   strokeStyle,
+  strokeWidth,
   text,
   textAlign,
   textLineHeight,
@@ -156,15 +156,15 @@ The combined font properties.
 
 `.fillStyle = '#fff'`
 
-The color or style to use inside shapes.
+The color or the style of the text.
 
 Changing the value will redraw the canvas if `autoRedraw` is `true`.
 
 ---
 
-`.lineWidth = 0`
+`.strokeWidth = 0`
 
-The thickness of lines. The pixels are calculated relative to the font size.
+The thickness of the stroke effect. The pixels are calculated relative to the font size.
 
 Changing the value will redraw the canvas if `autoRedraw` is `true`.
 
@@ -172,7 +172,7 @@ Changing the value will redraw the canvas if `autoRedraw` is `true`.
 
 `.strokeStyle = '#000'`
 
-The color or style to use for the lines around shapes.
+The color or the style of the stroke effect.
 
 Changing the value will redraw the canvas if `autoRedraw` is `true`.
 
@@ -180,7 +180,7 @@ Changing the value will redraw the canvas if `autoRedraw` is `true`.
 
 `.padding = 0.25`
 
-The space around the text inside the canvas. The pixels are calculated relative to the font size.
+The space around the text. The pixels are calculated relative to the font size.
 
 Changing the value will redraw the canvas if `autoRedraw` is `true`.
 

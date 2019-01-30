@@ -44,8 +44,8 @@
 				fontStyle: fontStyleValues[0],
 				fontVariant: fontVariantValues[0],
 				fontWeight: fontWeightValues[0],
-				lineWidth: 1/10,
 				strokeStyle: '#840032',
+				strokeWidth: 1/10,
 				text: [
 					'Twinkle, twinkle, little star,',
 					'How I wonder what you are!',
@@ -108,7 +108,7 @@
 					guiFolder.add(texture, 'textLineHeight', 0, 3, 1/20);
 					guiFolder.add(texture, 'padding', 0, 1, 1/20);
 					guiFolder.addColor(texture, 'fillStyle');
-					guiFolder.add(texture, 'lineWidth', 0, 1/4, 1/20);
+					guiFolder.add(texture, 'strokeWidth', 0, 1/4, 1/20);
 					guiFolder.addColor(texture, 'strokeStyle');
 					guiFolder.open();
 				})();
