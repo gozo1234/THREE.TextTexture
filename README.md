@@ -13,7 +13,7 @@ An instance of `TextTexture` is a texture for the text writing.
 ### npm
 
 ```shell
-npm install three.texttexture
+npm i three.texttexture
 ```
 
 ### ES module
