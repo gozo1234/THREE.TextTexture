@@ -1,7 +1,4 @@
-import {
-	LinearFilter,
-	Texture,
-} from 'three';
+import * as THREE from 'three';
 
 import Document_createCanvas from './utils/Document/createCanvas';
 import Lang_isUndefined from './utils/Lang/isUndefined';
@@ -10,7 +7,7 @@ import getFont from './getFont';
 import getTextLines from './getTextLines';
 import getTextWidth from './getTextWidth';
 
-export default class extends Texture {
+export default class extends THREE.Texture {
 	constructor({
 		anisotropy,
 		autoRedraw = true,
@@ -22,9 +19,9 @@ export default class extends Texture {
 		fontWeight = 'normal',
 		format,
 		lineWidth = 0,
-		magFilter = LinearFilter,
+		magFilter = THREE.LinearFilter,
 		mapping,
-		minFilter = LinearFilter,
+		minFilter = THREE.LinearFilter,
 		padding = 0.25,
 		strokeStyle = '#000',
 		text = '',
