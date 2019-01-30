@@ -25,7 +25,7 @@ export default class extends THREE.Texture {
 		strokeStyle = '#000',
 		strokeWidth = 0,
 		text = '',
-		textAlign = 'center',
+		align = 'center',
 		textLineHeight = 1.15,
 		type,
 		wrapS,
@@ -53,7 +53,7 @@ export default class extends THREE.Texture {
 		this._strokeStyle = strokeStyle;
 		this._strokeWidth = strokeWidth;
 		this._text = text;
-		this._textAlign = textAlign;
+		this._align = align;
 		this._textLineHeight = textLineHeight;
 		this.redraw();
 	}
@@ -67,7 +67,7 @@ export default class extends THREE.Texture {
 			ctx.font = this.font;
 			ctx.textBaseline = 'middle';
 			let left;
-			switch (this.textAlign) {
+			switch (this.align) {
 				case 'left':
 					ctx.textAlign = 'left';
 					left = this.paddingInPixels + this.strokeWidthInPixels / 2;
@@ -118,13 +118,13 @@ export default class extends THREE.Texture {
 		}
 	}
 
-	get textAlign() {
-		return this._textAlign;
+	get align() {
+		return this._align;
 	}
 
-	set textAlign(value) {
-		if (this._textAlign !== value) {
-			this._textAlign = value;
+	set align(value) {
+		if (this._align !== value) {
+			this._align = value;
 			this._redrawIfAuto();
 		}
 	}

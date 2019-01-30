@@ -1,5 +1,10 @@
 (function() {
 
+	var alignValues = [
+		'center',
+		'left',
+		'right',
+	];
 	var fontFamilyValues = [
 		'Finger Paint',
 		'Barrio',
@@ -19,11 +24,6 @@
 		'normal',
 		'bold',
 	];
-	var textAlignValues = [
-		'center',
-		'left',
-		'right',
-	];
 	Promise
 		.all(fontFamilyValues.map(function(fontFamily) {
 			return (new FontFaceObserver(fontFamily)).load();
@@ -38,6 +38,7 @@
 			var camera = new THREE.PerspectiveCamera(75, 1);
 			camera.position.set(0, 0, 3);
 			var texture = new THREE.TextTexture({
+				align: alignValues[0],
 				fillStyle: '#e59500',
 				fontFamily: fontFamilyValues[0],
 				fontSize: 32,
@@ -52,7 +53,6 @@
 					'Up above the world so high,',
 					'Like a diamond in the sky.',
 				].join('\n'),
-				textAlign: textAlignValues[0],
 			});
 			var material = new THREE.MeshBasicMaterial({
 				map: texture,
@@ -104,7 +104,7 @@
 					guiFolder.add(texture, 'fontWeight', fontWeightValues);
 					guiFolder.add(texture, 'fontSize', 0, 128, 1);
 					guiFolder.add(texture, 'fontFamily', fontFamilyValues);
-					guiFolder.add(texture, 'textAlign', textAlignValues);
+					guiFolder.add(texture, 'align', alignValues);
 					guiFolder.add(texture, 'textLineHeight', 0, 3, 1/20);
 					guiFolder.add(texture, 'padding', 0, 1, 1/20);
 					guiFolder.addColor(texture, 'fillStyle');

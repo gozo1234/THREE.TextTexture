@@ -35,6 +35,7 @@ The class `TextTexture` will be available under the namespace `THREE`.
 
 ```
 .constructor({
+  align,
   anisotropy,
   autoRedraw,
   fillStyle,
@@ -51,7 +52,6 @@ The class `TextTexture` will be available under the namespace `THREE`.
   strokeStyle,
   strokeWidth,
   text,
-  textAlign,
   textLineHeight,
   type,
   wrapS,
@@ -82,7 +82,7 @@ Changing the value will redraw the canvas if `autoRedraw` is `true`.
 
 ---
 
-`.textAlign = 'center'`
+`.align = 'center'`
 
 The horizontal alignment of the text. Possible values are `'center'`, `'left'` and `'right'`.
 
