@@ -46,18 +46,18 @@ export default class extends Texture {
 			anisotropy,
 		);
 		this.autoRedraw = autoRedraw;
+		this._fillStyle = fillStyle;
+		this._fontFamily = fontFamily;
+		this._fontSize = fontSize;
+		this._fontStyle = fontStyle;
+		this._fontVariant = fontVariant;
+		this._fontWeight = fontWeight;
+		this._lineWidth = lineWidth;
+		this._padding = padding;
+		this._strokeStyle = strokeStyle;
 		this._text = text;
 		this._textAlign = textAlign;
 		this._textLineHeight = textLineHeight;
-		this._fontFamily = fontFamily;
-		this._fontSize = fontSize;
-		this._fontWeight = fontWeight;
-		this._fontVariant = fontVariant;
-		this._fontStyle = fontStyle;
-		this._fillStyle = fillStyle;
-		this._lineWidth = lineWidth;
-		this._strokeStyle = strokeStyle;
-		this._padding = padding;
 		this.redraw();
 	}
 
