@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 
 import Document_createCanvas from './utils/Document/createCanvas';
+import Function_debounce from './utils/Function/debounce';
 import Lang_isUndefined from './utils/Lang/isUndefined';
 
 import getFont from './getFont';
@@ -11,7 +12,6 @@ export default class extends THREE.Texture {
 	constructor({
 		align = 'center',
 		anisotropy,
-		autoRedraw = true,
 		fillStyle = '#fff',
 		fontFamily = 'sans-serif',
 		fontSize = 16,
@@ -42,7 +42,6 @@ export default class extends THREE.Texture {
 			type,
 			anisotropy,
 		);
-		this.autoRedraw = autoRedraw;
 		this._align = align;
 		this._fillStyle = fillStyle;
 		this._fontFamily = fontFamily;
@@ -55,13 +54,8 @@ export default class extends THREE.Texture {
 		this._strokeStyle = strokeStyle;
 		this._strokeWidth = strokeWidth;
 		this._text = text;
-		this.redraw();
-	}
-
-	_redrawIfAuto() {
-		if (this.autoRedraw) {
-			this.redraw();
-		}
+		this.redraw = Function_debounce(this.redrawNow, 1);
+		this.redrawNow();
 	}
 
 	get align() {
@@ -71,15 +65,8 @@ export default class extends THREE.Texture {
 	set align(value) {
 		if (this._align !== value) {
 			this._align = value;
-			this._redrawIfAuto();
+			this.redraw();
 		}
-	}
-
-	get aspect() {
-		if (this.widthInPixels && this.heightInPixels) {
-			return this.widthInPixels / this.heightInPixels;
-		}
-		return 1;
 	}
 
 	get fillStyle() {
@@ -89,7 +76,7 @@ export default class extends THREE.Texture {
 	set fillStyle(value) {
 		if (this._fillStyle !== value) {
 			this._fillStyle = value;
-			this._redrawIfAuto();
+			this.redraw();
 		}
 	}
 
@@ -111,7 +98,7 @@ export default class extends THREE.Texture {
 		if (this._fontFamily !== value) {
 			this._fontFamily = value;
 			this._textWidthInPixels = undefined;
-			this._redrawIfAuto();
+			this.redraw();
 		}
 	}
 
@@ -123,7 +110,7 @@ export default class extends THREE.Texture {
 		if (this._fontSize !== value) {
 			this._fontSize = value;
 			this._textWidthInPixels = undefined;
-			this._redrawIfAuto();
+			this.redraw();
 		}
 	}
 
@@ -135,7 +122,7 @@ export default class extends THREE.Texture {
 		if (this._fontStyle !== value) {
 			this._fontStyle = value;
 			this._textWidthInPixels = undefined;
-			this._redrawIfAuto();
+			this.redraw();
 		}
 	}
 
@@ -147,7 +134,7 @@ export default class extends THREE.Texture {
 		if (this._fontVariant !== value) {
 			this._fontVariant = value;
 			this._textWidthInPixels = undefined;
-			this._redrawIfAuto();
+			this.redraw();
 		}
 	}
 
@@ -159,7 +146,7 @@ export default class extends THREE.Texture {
 		if (this._fontWeight !== value) {
 			this._fontWeight = value;
 			this._textWidthInPixels = undefined;
-			this._redrawIfAuto();
+			this.redraw();
 		}
 	}
 
@@ -185,7 +172,7 @@ export default class extends THREE.Texture {
 	set lineSpacing(value) {
 		if (this._lineSpacing !== value) {
 			this._lineSpacing = value;
-			this._redrawIfAuto();
+			this.redraw();
 		}
 	}
 
@@ -200,7 +187,7 @@ export default class extends THREE.Texture {
 	set padding(value) {
 		if (this._padding !== value) {
 			this._padding = value;
-			this._redrawIfAuto();
+			this.redraw();
 		}
 	}
 
@@ -208,11 +195,11 @@ export default class extends THREE.Texture {
 		return this.padding * this.fontSize;
 	}
 
-	redraw() {
+	redrawNow() {
 		let canvas = this.image;
 		let context = canvas.getContext('2d');
 		context.clearRect(0, 0, canvas.width, canvas.height);
-		if (this.textWidthInPixels && this.textHeightInPixels) {
+		if (this.widthInPixels && this.heightInPixels) {
 			canvas.width = this.widthInPixels;
 			canvas.height = this.heightInPixels;
 			context.font = this.font;
@@ -238,7 +225,7 @@ export default class extends THREE.Texture {
 			context.lineWidth = this.strokeWidthInPixels;
 			context.strokeStyle = this.strokeStyle;
 			this.lines.forEach(text => {
-				if (this.strokeWidth) {
+				if (this.strokeWidthInPixels) {
 					context.strokeText(text, left, top);
 				}
 				context.fillText(text, left, top);
@@ -257,7 +244,7 @@ export default class extends THREE.Texture {
 	set strokeStyle(value) {
 		if (this._strokeStyle !== value) {
 			this._strokeStyle = value;
-			this._redrawIfAuto();
+			this.redraw();
 		}
 	}
 
@@ -268,7 +255,7 @@ export default class extends THREE.Texture {
 	set strokeWidth(value) {
 		if (this._strokeWidth !== value) {
 			this._strokeWidth = value;
-			this._redrawIfAuto();
+			this.redraw();
 		}
 	}
 
@@ -285,7 +272,7 @@ export default class extends THREE.Texture {
 			this._text = value;
 			this._lines = undefined;
 			this._textWidthInPixels = undefined;
-			this._redrawIfAuto();
+			this.redraw();
 		}
 	}
 

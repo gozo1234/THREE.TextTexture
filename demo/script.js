@@ -62,7 +62,7 @@
 			var mesh = new THREE.Mesh(geometry, material);
 			scene.add(mesh);
 			var updateMeshScale = function() {
-				mesh.scale.set(1, 1/material.map.aspect, 1);
+				mesh.scale.set(1, material.map.image.height / material.map.image.width, 1);
 			};
 			var rotateMesh = (function() {
 				var nextStep = function(step, value, minValue, maxValue) {
