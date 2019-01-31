@@ -19,6 +19,7 @@ export default class extends THREE.Texture {
 		fontVariant = 'normal',
 		fontWeight = 'normal',
 		format,
+		lineSpacing = 0.15,
 		magFilter = THREE.LinearFilter,
 		mapping,
 		minFilter = THREE.LinearFilter,
@@ -26,7 +27,6 @@ export default class extends THREE.Texture {
 		strokeStyle = '#000',
 		strokeWidth = 0,
 		text = '',
-		textLineHeight = 1.15,
 		type,
 		wrapS,
 		wrapT,
@@ -50,72 +50,17 @@ export default class extends THREE.Texture {
 		this._fontStyle = fontStyle;
 		this._fontVariant = fontVariant;
 		this._fontWeight = fontWeight;
+		this._lineSpacing = lineSpacing;
 		this._padding = padding;
 		this._strokeStyle = strokeStyle;
 		this._strokeWidth = strokeWidth;
 		this._text = text;
-		this._textLineHeight = textLineHeight;
 		this.redraw();
-	}
-
-	redraw() {
-		let canvas = this.image;
-		let context = canvas.getContext('2d');
-		context.clearRect(0, 0, canvas.width, canvas.height);
-		if (this.textWidthInPixels && this.textHeightInPixels) {
-			canvas.width = this.widthInPixels;
-			canvas.height = this.heightInPixels;
-			context.font = this.font;
-			context.textBaseline = 'middle';
-			let left;
-			switch (this.align) {
-				case 'left':
-					context.textAlign = 'left';
-					left = this.paddingInPixels + this.strokeWidthInPixels / 2;
-					break;
-				case 'right':
-					context.textAlign = 'right';
-					left = this.paddingInPixels + this.strokeWidthInPixels / 2 + this.textWidthInPixels;
-					break;
-				case 'center':
-					context.textAlign = 'center';
-					left = this.paddingInPixels + this.strokeWidthInPixels / 4 + this.textWidthInPixels / 2;
-					break;
-			}
-			let top = this.paddingInPixels + this.strokeWidthInPixels / 2 + this.fontSize / 2;
-			context.fillStyle = this.fillStyle;
-			context.miterLimit = 1;
-			context.lineWidth = this.strokeWidthInPixels;
-			context.strokeStyle = this.strokeStyle;
-			this.lines.forEach(text => {
-				if (this.strokeWidth) {
-					context.strokeText(text, left, top);
-				}
-				context.fillText(text, left, top);
-				top += this.textLineHeightInPixels;
-			});
-		} else {
-			canvas.width = canvas.height = 1;
-		}
-		this.needsUpdate = true;
 	}
 
 	_redrawIfAuto() {
 		if (this.autoRedraw) {
 			this.redraw();
-		}
-	}
-
-	get text() {
-		return this._text;
-	}
-
-	set text(value) {
-		if (this._text !== value) {
-			this._text = value;
-			this._lines = undefined;
-			this._textWidthInPixels = undefined;
-			this._redrawIfAuto();
 		}
 	}
 
@@ -130,26 +75,32 @@ export default class extends THREE.Texture {
 		}
 	}
 
-	get lines() {
-		if (Lang_isUndefined(this._lines)) {
-			this._lines = getLines(this.text);
+	get aspect() {
+		if (this.widthInPixels && this.heightInPixels) {
+			return this.widthInPixels / this.heightInPixels;
 		}
-		return this._lines;
+		return 1;
 	}
 
-	get textLineHeight() {
-		return this._textLineHeight;
+	get fillStyle() {
+		return this._fillStyle;
 	}
 
-	set textLineHeight(value) {
-		if (this._textLineHeight !== value) {
-			this._textLineHeight = value;
+	set fillStyle(value) {
+		if (this._fillStyle !== value) {
+			this._fillStyle = value;
 			this._redrawIfAuto();
 		}
 	}
 
-	get textLineHeightInPixels() {
-		return this.fontSize * this.textLineHeight;
+	get font() {
+		return getFont(
+			this.fontStyle,
+			this.fontVariant,
+			this.fontWeight,
+			this.fontSize,
+			this.fontFamily,
+		);
 	}
 
 	get fontFamily() {
@@ -176,13 +127,13 @@ export default class extends THREE.Texture {
 		}
 	}
 
-	get fontWeight() {
-		return this._fontWeight;
+	get fontStyle() {
+		return this._fontStyle;
 	}
 
-	set fontWeight(value) {
-		if (this._fontWeight !== value) {
-			this._fontWeight = value;
+	set fontStyle(value) {
+		if (this._fontStyle !== value) {
+			this._fontStyle = value;
 			this._textWidthInPixels = undefined;
 			this._redrawIfAuto();
 		}
@@ -200,35 +151,112 @@ export default class extends THREE.Texture {
 		}
 	}
 
-	get fontStyle() {
-		return this._fontStyle;
+	get fontWeight() {
+		return this._fontWeight;
 	}
 
-	set fontStyle(value) {
-		if (this._fontStyle !== value) {
-			this._fontStyle = value;
+	set fontWeight(value) {
+		if (this._fontWeight !== value) {
+			this._fontWeight = value;
 			this._textWidthInPixels = undefined;
 			this._redrawIfAuto();
 		}
 	}
 
-	get font() {
-		return getFont(
-			this.fontStyle,
-			this.fontVariant,
-			this.fontWeight,
-			this.fontSize,
-			this.fontFamily,
-		);
+	get height() {
+		return this.textHeight + this.strokeWidth + this.padding * 2;
 	}
 
-	get fillStyle() {
-		return this._fillStyle;
+	get heightInPixels() {
+		return this.height * this.fontSize;
 	}
 
-	set fillStyle(value) {
-		if (this._fillStyle !== value) {
-			this._fillStyle = value;
+	get lines() {
+		if (Lang_isUndefined(this._lines)) {
+			this._lines = getLines(this.text);
+		}
+		return this._lines;
+	}
+
+	get lineSpacing() {
+		return this._lineSpacing;
+	}
+
+	set lineSpacing(value) {
+		if (this._lineSpacing !== value) {
+			this._lineSpacing = value;
+			this._redrawIfAuto();
+		}
+	}
+
+	get lineSpacingInPixels() {
+		return this.fontSize * this.lineSpacing;
+	}
+
+	get padding() {
+		return this._padding;
+	}
+
+	set padding(value) {
+		if (this._padding !== value) {
+			this._padding = value;
+			this._redrawIfAuto();
+		}
+	}
+
+	get paddingInPixels() {
+		return this.padding * this.fontSize;
+	}
+
+	redraw() {
+		let canvas = this.image;
+		let context = canvas.getContext('2d');
+		context.clearRect(0, 0, canvas.width, canvas.height);
+		if (this.textWidthInPixels && this.textHeightInPixels) {
+			canvas.width = this.widthInPixels;
+			canvas.height = this.heightInPixels;
+			context.font = this.font;
+			context.textBaseline = 'middle';
+			let left;
+			switch (this.align) {
+				case 'left':
+					context.textAlign = 'left';
+					left = this.paddingInPixels + this.strokeWidthInPixels / 2;
+					break;
+				case 'right':
+					context.textAlign = 'right';
+					left = this.paddingInPixels + this.strokeWidthInPixels / 2 + this.textWidthInPixels;
+					break;
+				case 'center':
+					context.textAlign = 'center';
+					left = this.paddingInPixels + this.strokeWidthInPixels / 2 + this.textWidthInPixels / 2;
+					break;
+			}
+			let top = this.paddingInPixels + this.strokeWidthInPixels / 2 + this.fontSize / 2;
+			context.fillStyle = this.fillStyle;
+			context.miterLimit = 1;
+			context.lineWidth = this.strokeWidthInPixels;
+			context.strokeStyle = this.strokeStyle;
+			this.lines.forEach(text => {
+				if (this.strokeWidth) {
+					context.strokeText(text, left, top);
+				}
+				context.fillText(text, left, top);
+				top += this.fontSize + this.lineSpacingInPixels;
+			});
+		} else {
+			canvas.width = canvas.height = 1;
+		}
+		this.needsUpdate = true;
+	}
+
+	get strokeStyle() {
+		return this._strokeStyle;
+	}
+
+	set strokeStyle(value) {
+		if (this._strokeStyle !== value) {
+			this._strokeStyle = value;
 			this._redrawIfAuto();
 		}
 	}
@@ -248,15 +276,28 @@ export default class extends THREE.Texture {
 		return this._strokeWidth * this.fontSize;
 	}
 
-	get strokeStyle() {
-		return this._strokeStyle;
+	get text() {
+		return this._text;
 	}
 
-	set strokeStyle(value) {
-		if (this._strokeStyle !== value) {
-			this._strokeStyle = value;
+	set text(value) {
+		if (this._text !== value) {
+			this._text = value;
+			this._lines = undefined;
+			this._textWidthInPixels = undefined;
 			this._redrawIfAuto();
 		}
+	}
+
+	get textHeight() {
+		return (this.lines.length
+			? this.lines.length + this.lineSpacing * (this.lines.length - 1)
+			: 0
+		);
+	}
+
+	get textHeightInPixels() {
+		return this.textHeight * this.fontSize;
 	}
 
 	get textWidthInPixels() {
@@ -269,45 +310,7 @@ export default class extends THREE.Texture {
 		return this._textWidthInPixels;
 	}
 
-	get textHeight() {
-		return this.textLineHeight * (this.lines.length - 1) + 1;
-	}
-
-	get textHeightInPixels() {
-		return this.textHeight * this.fontSize;
-	}
-
-	get padding() {
-		return this._padding;
-	}
-
-	set padding(value) {
-		if (this._padding !== value) {
-			this._padding = value;
-			this._redrawIfAuto();
-		}
-	}
-
-	get paddingInPixels() {
-		return this.padding * this.fontSize;
-	}
-
 	get widthInPixels() {
 		return this.textWidthInPixels + this.strokeWidthInPixels + this.paddingInPixels * 2;
-	}
-
-	get height() {
-		return this.textHeight + this.strokeWidth + this.padding * 2;
-	}
-
-	get heightInPixels() {
-		return this.height * this.fontSize;
-	}
-
-	get aspect() {
-		if (this.widthInPixels && this.heightInPixels) {
-			return this.widthInPixels / this.heightInPixels;
-		}
-		return 1;
 	}
 }

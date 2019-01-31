@@ -45,6 +45,7 @@ The class `TextTexture` will be available under the namespace `THREE`.
   fontVariant,
   fontWeight,
   format,
+  lineSpacing,
   magFilter,
   mapping,
   minFilter,
@@ -52,7 +53,6 @@ The class `TextTexture` will be available under the namespace `THREE`.
   strokeStyle,
   strokeWidth,
   text,
-  textLineHeight,
   type,
   wrapS,
   wrapT,
@@ -82,27 +82,11 @@ Changing the value will redraw the canvas if `autoRedraw` is `true`.
 
 ---
 
-`.align = 'center'`
-
-The horizontal alignment of the text. Possible values are `'center'`, `'left'` and `'right'`.
-
-Changing the value will redraw the canvas if `autoRedraw` is `true`.
-
----
-
 `.lines`
 
 *read-only*
 
-The text split by the new line character.
-
----
-
-`.textLineHeight = 1.15`
-
-The height of a text line. The pixels are calculated relative to the font size.
-
-Changing the value will redraw the canvas if `autoRedraw` is `true`.
+The lines of text.
 
 ---
 
@@ -173,6 +157,22 @@ Changing the value will redraw the canvas if `autoRedraw` is `true`.
 `.strokeStyle = '#000'`
 
 The color or the style of the stroke effect.
+
+Changing the value will redraw the canvas if `autoRedraw` is `true`.
+
+---
+
+`.align = 'center'`
+
+The horizontal alignment of the text. Possible values are `'center'`, `'left'` and `'right'`.
+
+Changing the value will redraw the canvas if `autoRedraw` is `true`.
+
+---
+
+`.lineSpacing = 0.15`
+
+The vertical distance between the lines of text. The pixels are calculated relative to the font size.
 
 Changing the value will redraw the canvas if `autoRedraw` is `true`.
 

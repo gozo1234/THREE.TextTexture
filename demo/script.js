@@ -104,12 +104,12 @@
 					guiFolder.add(texture, 'fontWeight', fontWeightValues);
 					guiFolder.add(texture, 'fontSize', 0, 128, 1);
 					guiFolder.add(texture, 'fontFamily', fontFamilyValues);
-					guiFolder.add(texture, 'align', alignValues);
-					guiFolder.add(texture, 'textLineHeight', 0, 3, 1/20);
-					guiFolder.add(texture, 'padding', 0, 1, 1/20);
 					guiFolder.addColor(texture, 'fillStyle');
 					guiFolder.add(texture, 'strokeWidth', 0, 1/4, 1/20);
 					guiFolder.addColor(texture, 'strokeStyle');
+					guiFolder.add(texture, 'align', alignValues);
+					guiFolder.add(texture, 'lineSpacing', 0, 2, 1/20);
+					guiFolder.add(texture, 'padding', 0, 1, 1/20);
 					guiFolder.open();
 				})();
 				(function() {
