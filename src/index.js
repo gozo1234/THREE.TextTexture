@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 
 import Document_createCanvas from './utils/Document/createCanvas';
-import Function_debounce from './utils/Function/debounce';
 import Lang_isUndefined from './utils/Lang/isUndefined';
 
 import getFont from './getFont';
@@ -54,7 +53,6 @@ export default class extends THREE.Texture {
 		this._strokeStyle = strokeStyle;
 		this._strokeWidth = strokeWidth;
 		this._text = text;
-		this.redraw = Function_debounce(this.redrawNow, 1);
 		this.redrawNow();
 	}
 
@@ -195,7 +193,15 @@ export default class extends THREE.Texture {
 		return this.padding * this.fontSize;
 	}
 
+	redraw() {
+		clearTimeout(this._redrawTimeoutId);
+		this._redrawTimeoutId = setTimeout(() => {
+			this.redrawNow();
+		}, 0);
+	}
+
 	redrawNow() {
+		clearTimeout(this._redrawTimeoutId);
 		let canvas = this.image;
 		let context = canvas.getContext('2d');
 		context.clearRect(0, 0, canvas.width, canvas.height);
