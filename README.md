@@ -91,37 +91,37 @@ The text to write on the canvas.
 
 *read-only*
 
-The lines of text.
+The lines of the text.
 
 ---
 
 `.fontFamily = 'sans-serif'`
 
-The font family of the text.
+The family of the font.
 
 ---
 
 `.fontSize = 16`
 
-The font size of the text in pixels.
+The size of the font in pixels.
 
 ---
 
 `.fontWeight = 'normal'`
 
-The font weight of the text. Possible values are `'normal'`, `'bold'`, `'bolder'`, `'lighter'` and `'100'` to `'900'`.
+The weight of the font. Possible values are `'normal'`, `'bold'`, `'bolder'`, `'lighter'` and `'100'` to `'900'`.
 
 ---
 
 `.fontVariant = 'normal'`
 
-The font variant of the text. Possible values are `'normal'` and `'small-caps'`.
+The variant of the font. Possible values are `'normal'` and `'small-caps'`.
 
 ---
 
 `.fontStyle = 'normal'`
 
-The font style of the text. Possible values are `'normal'`, `'italic'` and `'oblique'`.
+The style of the font. Possible values are `'normal'`, `'italic'` and `'oblique'`.
 
 ---
 
@@ -129,25 +129,25 @@ The font style of the text. Possible values are `'normal'`, `'italic'` and `'obl
 
 *read-only*
 
-The combined font properties.
+The combined properties of the font.
 
 ---
 
 `.fillStyle = '#fff'`
 
-The color or the style of the text.
+The fill color or the style of the characters of the text.
 
 ---
 
 `.strokeWidth = 0`
 
-The thickness of the stroke effect. The pixels are calculated relative to the font size.
+The stroke width of the characters of the text. The pixels are calculated relative to the font size.
 
 ---
 
 `.strokeStyle = '#000'`
 
-The color or the style of the stroke effect.
+The stroke color or the style of the characters of the text.
 
 ---
 
@@ -159,13 +159,13 @@ The horizontal alignment of the text. Possible values are `'center'`, `'left'` a
 
 `.lineSpacing = 0.15`
 
-The vertical distance between the lines of text. The pixels are calculated relative to the font size.
+The vertical distance between the lines of the text. The pixels are calculated relative to the font size.
 
 ---
 
 `.padding = 0.25`
 
-The space around the text. The pixels are calculated relative to the font size.
+The space around the content. The pixels are calculated relative to the font size.
 
 ## see also
 
