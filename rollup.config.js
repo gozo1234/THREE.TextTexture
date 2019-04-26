@@ -1,6 +1,5 @@
 import {terser} from 'rollup-plugin-terser';
 import buble from 'rollup-plugin-buble';
-import path from 'path';
 
 import {main} from './package.json';
 
@@ -9,16 +8,16 @@ let globals = {
 };
 
 export default {
-	input: 'src/index.js',
 	external: Object.keys(globals),
-	output: {
-		file: main,
-		format: 'umd',
-		name: path.basename(main, path.extname(main)),
-		globals,
-	},
+	input: 'src/index.js',
 	plugins: [
 		buble(),
 		terser(),
 	],
+	output: {
+		file: main,
+		format: 'umd',
+		name: 'THREE.TextTexture',
+		globals,
+	},
 };

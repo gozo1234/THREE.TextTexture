@@ -17,7 +17,7 @@
 	],
 	"license": "MIT",
 	"author": "Sergej Sintschilin <seregpie@gmail.com>",
-	"main": "THREE.TextTexture.js",
+	"main": "index.js",
 	"repository": "https://github.com/SeregPie/THREE.TextTexture.git",
 	"scripts": {
 		"build": "rollup -c",
