@@ -1,11 +1,9 @@
 import * as THREE from 'three';
 
+import Array_max from './utils/Array/max';
+import CSS_font from './utils/CSS/font';
 import Object_isUndefined from './utils/Object/isUndefined';
 import Promise_debounce from './utils/Promise/debounce';
-
-import getFont from './getFont';
-import getLines from './getLines';
-import getTextWidth from './getTextWidth';
 
 export default class extends THREE.Texture {
 	constructor({
@@ -23,7 +21,7 @@ export default class extends THREE.Texture {
 		format,
 		lineGap = 0.15,
 		loadFontFace = function(family, style, variant, weight) {
-			let font = getFont(style, variant, weight, 1, family);
+			let font = CSS_font(style, variant, weight, 1, family);
 			return document.fonts.load(font);
 		},
 		magFilter = THREE.LinearFilter,
@@ -81,9 +79,14 @@ export default class extends THREE.Texture {
 
 	get lines() {
 		if (Object_isUndefined(this._lines)) {
-			this._lines = getLines(this.text);
+			this._lines = this.computeLines();
 		}
 		return this._lines;
+	}
+
+	computeLines() {
+		let {text} = this;
+		return text ? text.split('\n') : [];
 	}
 
 	get fontFamily() {
@@ -147,7 +150,7 @@ export default class extends THREE.Texture {
 	}
 
 	get font() {
-		return getFont(
+		return CSS_font(
 			this.fontStyle,
 			this.fontVariant,
 			this.fontWeight,
@@ -236,18 +239,32 @@ export default class extends THREE.Texture {
 
 	get textWidthInPixels() {
 		if (Object_isUndefined(this._textWidthInPixels)) {
-			this._textWidthInPixels = getTextWidth(
-				this.createCanvas,
-				this.lines,
-				this.font,
-			);
+			this._textWidthInPixels = this.computeTextWidthInPixels();
 		}
 		return this._textWidthInPixels;
 	}
 
+	computeTextWidthInPixels() {
+		let {
+			createCanvas,
+			font,
+			lines,
+		} = this;
+		if (lines.length) {
+			let context = createCanvas().getContext('2d');
+			context.font = font;
+			return Array_max(lines.map(text => context.measureText(text).width));
+		}
+		return 0;
+	}
+
 	get textHeight() {
-		return (this.lines.length
-			? this.lines.length + this.lineGap * (this.lines.length - 1)
+		let {
+			lineGap,
+			lines,
+		} = this;
+		return (lines.length
+			? lines.length + lineGap * (lines.length - 1)
 			: 0
 		);
 	}
