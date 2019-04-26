@@ -44,7 +44,7 @@ The class `TextTexture` will be available under the namespace `THREE`.
   fontVariant,
   fontWeight,
   format,
-  lineSpacing,
+  lineGap,
   magFilter,
   mapping,
   minFilter,
@@ -157,7 +157,7 @@ The horizontal alignment of the text. Possible values are `'center'`, `'left'` a
 
 ---
 
-`.lineSpacing = 0.15`
+`.lineGap = 0.15`
 
 The vertical distance between the lines of the text. The pixels are calculated relative to the font size.
 

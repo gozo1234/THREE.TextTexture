@@ -18,7 +18,7 @@ export default class extends THREE.Texture {
 		fontVariant = 'normal',
 		fontWeight = 'normal',
 		format,
-		lineSpacing = 0.15,
+		lineGap = 0.15,
 		magFilter = THREE.LinearFilter,
 		mapping,
 		minFilter = THREE.LinearFilter,
@@ -48,7 +48,7 @@ export default class extends THREE.Texture {
 		this._fontStyle = fontStyle;
 		this._fontVariant = fontVariant;
 		this._fontWeight = fontWeight;
-		this._lineSpacing = lineSpacing;
+		this._lineGap = lineGap;
 		this._padding = padding;
 		this._strokeStyle = strokeStyle;
 		this._strokeWidth = strokeWidth;
@@ -194,19 +194,19 @@ export default class extends THREE.Texture {
 		}
 	}
 
-	get lineSpacing() {
-		return this._lineSpacing;
+	get lineGap() {
+		return this._lineGap;
 	}
 
-	set lineSpacing(value) {
-		if (this._lineSpacing !== value) {
-			this._lineSpacing = value;
+	set lineGap(value) {
+		if (this._lineGap !== value) {
+			this._lineGap = value;
 			this.redraw();
 		}
 	}
 
-	get lineSpacingInPixels() {
-		return this.fontSize * this.lineSpacing;
+	get lineGapInPixels() {
+		return this.fontSize * this.lineGap;
 	}
 
 	get padding() {
@@ -236,7 +236,7 @@ export default class extends THREE.Texture {
 
 	get textHeight() {
 		return (this.lines.length
-			? this.lines.length + this.lineSpacing * (this.lines.length - 1)
+			? this.lines.length + this.lineGap * (this.lines.length - 1)
 			: 0
 		);
 	}
@@ -299,7 +299,7 @@ export default class extends THREE.Texture {
 					context.strokeText(text, left, top);
 				}
 				context.fillText(text, left, top);
-				top += this.fontSize + this.lineSpacingInPixels;
+				top += this.fontSize + this.lineGapInPixels;
 			});
 		} else {
 			canvas.width = canvas.height = 1;
