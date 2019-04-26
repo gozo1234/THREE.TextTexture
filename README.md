@@ -87,7 +87,7 @@ scene.add(sprite);
 
 `.text = ''`
 
-The text to write on the canvas.
+The text.
 
 ---
 
@@ -95,37 +95,37 @@ The text to write on the canvas.
 
 *read-only*
 
-The lines of the text.
+The text splitted by the newline character.
 
 ---
 
 `.fontFamily = 'sans-serif'`
 
-The family of the font.
+The font family.
 
 ---
 
 `.fontSize = 16`
 
-The size of the font in pixels.
+The font size in pixels.
 
 ---
 
 `.fontWeight = 'normal'`
 
-The weight of the font. Possible values are `'normal'`, `'bold'`, `'bolder'`, `'lighter'` and `'100'` to `'900'`.
+The font weight. Possible values are `'normal'`, `'bold'`, `'bolder'`, `'lighter'` and `'100'` to `'900'`.
 
 ---
 
 `.fontVariant = 'normal'`
 
-The variant of the font. Possible values are `'normal'` and `'small-caps'`.
+The font variant. Possible values are `'normal'` and `'small-caps'`.
 
 ---
 
 `.fontStyle = 'normal'`
 
-The style of the font. Possible values are `'normal'`, `'italic'` and `'oblique'`.
+The font style. Possible values are `'normal'`, `'italic'` and `'oblique'`.
 
 ---
 
@@ -133,43 +133,43 @@ The style of the font. Possible values are `'normal'`, `'italic'` and `'oblique'
 
 *read-only*
 
-The combined properties of the font.
+The combined font properties.
 
 ---
 
 `.fillStyle = '#fff'`
 
-The fill color or the style of the characters of the text.
+The fill color or the style of the text characters.
 
 ---
 
 `.strokeWidth = 0`
 
-The stroke width of the characters of the text. The pixels are calculated relative to the font size.
+The stroke width of the text characters. The pixels are calculated relative to the font size.
 
 ---
 
 `.strokeStyle = '#000'`
 
-The stroke color or the style of the characters of the text.
+The stroke color or the style of the text characters.
 
 ---
 
 `.align = 'center'`
 
-The horizontal alignment of the text. Possible values are `'center'`, `'left'` and `'right'`.
+The horizontal text alignment. Possible values are `'center'`, `'left'` and `'right'`.
 
 ---
 
 `.lineGap = 0.15`
 
-The vertical distance between the lines of the text. The pixels are calculated relative to the font size.
+The vertical distance between the text lines. The pixels are calculated relative to the font size.
 
 ---
 
 `.padding = 0.25`
 
-The space around the content. The pixels are calculated relative to the font size.
+The space around the text. The pixels are calculated relative to the font size.
 
 ---
 
