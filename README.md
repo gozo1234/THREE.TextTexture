@@ -37,6 +37,7 @@ The class `TextTexture` will be available under the namespace `THREE`.
 .constructor({
   align,
   anisotropy,
+  createCanvas,
   fillStyle,
   fontFamily,
   fontSize,
@@ -166,6 +167,20 @@ The vertical distance between the lines of the text. The pixels are calculated r
 `.padding = 0.25`
 
 The space around the content. The pixels are calculated relative to the font size.
+
+---
+
+`.createCanvas`
+
+Creates a new `Canvas` instance.
+
+```javascript
+// default implementation
+createCanvas() {
+  return document.createElement('canvas');
+}
+```
+
 
 ## see also
 

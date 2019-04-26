@@ -1,9 +1,8 @@
 import Array_max from './utils/Array/max';
-import Document_createCanvas from './utils/Document/createCanvas';
 
-export default function(lines, font) {
+export default function(createCanvas, lines, font) {
 	if (lines.length) {
-		let ctx = Document_createCanvas().getContext('2d');
+		let ctx = createCanvas().getContext('2d');
 		ctx.font = font;
 		return Array_max(lines.map(text => ctx.measureText(text).width));
 	}

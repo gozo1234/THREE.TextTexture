@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 
-import Document_createCanvas from './utils/Document/createCanvas';
 import Object_isUndefined from './utils/Object/isUndefined';
 
 import getFont from './getFont';
@@ -11,6 +10,9 @@ export default class extends THREE.Texture {
 	constructor({
 		align = 'center',
 		anisotropy,
+		createCanvas = function() {
+			return document.createElement('canvas');
+		},
 		fillStyle = '#fff',
 		fontFamily = 'sans-serif',
 		fontSize = 16,
@@ -31,7 +33,7 @@ export default class extends THREE.Texture {
 		wrapT,
 	} = {}) {
 		super(
-			Document_createCanvas(),
+			createCanvas(),
 			mapping,
 			wrapS,
 			wrapT,
@@ -53,6 +55,7 @@ export default class extends THREE.Texture {
 		this._strokeStyle = strokeStyle;
 		this._strokeWidth = strokeWidth;
 		this._text = text;
+		this.createCanvas = createCanvas;
 		this.redrawNow();
 	}
 
@@ -227,6 +230,7 @@ export default class extends THREE.Texture {
 	get textWidthInPixels() {
 		if (Object_isUndefined(this._textWidthInPixels)) {
 			this._textWidthInPixels = getTextWidth(
+				this.createCanvas,
 				this.lines,
 				this.font,
 			);
