@@ -33,8 +33,10 @@ The class `TextTexture` will be available under the namespace `THREE`.
 
 ## members
 
+### constructor
+
 ```
-.constructor({
+new THREE.TextTexture({
   align,
   anisotropy,
   createCanvas,
@@ -80,7 +82,7 @@ sprite.scale.setX(texture.image.width / texture.image.height).multiplyScalar(10)
 scene.add(sprite);
 ```
 
----
+### properties
 
 `.text = ''`
 
@@ -180,7 +182,6 @@ createCanvas() {
   return document.createElement('canvas');
 }
 ```
-
 
 ## see also
 
