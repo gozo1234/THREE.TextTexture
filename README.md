@@ -48,6 +48,7 @@ new THREE.TextTexture({
   fontWeight,
   format,
   lineGap,
+  loadFontFace,
   magFilter,
   mapping,
   minFilter,
@@ -172,14 +173,23 @@ The space around the content. The pixels are calculated relative to the font siz
 
 ---
 
-`.createCanvas`
+`.createCanvas()`
 
 Creates a new `Canvas` instance.
 
+---
+
+`.loadFontFace(family, style, variant, weight)`
+
+Forces a font face to be loaded.
+
+---
+
+Provide custom `loadFontFace` function to support older browsers.
+
 ```javascript
-// default implementation
-createCanvas() {
-  return document.createElement('canvas');
+loadFontFace(family, style, variant, weight) {
+  return (new FontFaceObserver(family, {style, weight})).load();
 }
 ```
 

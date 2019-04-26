@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 
 import Object_isUndefined from './utils/Object/isUndefined';
+import Promise_debounce from './utils/Promise/debounce';
 
 import getFont from './getFont';
 import getLines from './getLines';
@@ -21,6 +22,10 @@ export default class extends THREE.Texture {
 		fontWeight = 'normal',
 		format,
 		lineGap = 0.15,
+		loadFontFace = function(family, style, variant, weight) {
+			let font = getFont(style, variant, weight, 1, family);
+			return document.fonts.load(font);
+		},
 		magFilter = THREE.LinearFilter,
 		mapping,
 		minFilter = THREE.LinearFilter,
@@ -56,6 +61,8 @@ export default class extends THREE.Texture {
 		this._strokeWidth = strokeWidth;
 		this._text = text;
 		this.createCanvas = createCanvas;
+		this.loadFontFace = loadFontFace;
+		this.redraw = Promise_debounce(this.redrawNow);
 		this.redrawNow();
 	}
 
@@ -261,53 +268,55 @@ export default class extends THREE.Texture {
 		return this.height * this.fontSize;
 	}
 
-	redraw() {
-		clearTimeout(this._redrawTimeoutId);
-		this._redrawTimeoutId = setTimeout(() => {
-			this.redrawNow();
-		}, 0);
-	}
-
 	redrawNow() {
-		clearTimeout(this._redrawTimeoutId);
-		let canvas = this.image;
-		let context = canvas.getContext('2d');
-		context.clearRect(0, 0, canvas.width, canvas.height);
-		if (this.widthInPixels && this.heightInPixels) {
-			canvas.width = this.widthInPixels;
-			canvas.height = this.heightInPixels;
-			context.font = this.font;
-			context.textBaseline = 'middle';
-			let left;
-			switch (this.align) {
-				case 'left':
-					context.textAlign = 'left';
-					left = this.paddingInPixels + this.strokeWidthInPixels / 2;
-					break;
-				case 'right':
-					context.textAlign = 'right';
-					left = this.paddingInPixels + this.strokeWidthInPixels / 2 + this.textWidthInPixels;
-					break;
-				case 'center':
-					context.textAlign = 'center';
-					left = this.paddingInPixels + this.strokeWidthInPixels / 2 + this.textWidthInPixels / 2;
-					break;
-			}
-			let top = this.paddingInPixels + this.strokeWidthInPixels / 2 + this.fontSize / 2;
-			context.fillStyle = this.fillStyle;
-			context.miterLimit = 1;
-			context.lineWidth = this.strokeWidthInPixels;
-			context.strokeStyle = this.strokeStyle;
-			this.lines.forEach(text => {
-				if (this.strokeWidthInPixels) {
-					context.strokeText(text, left, top);
+		return Promise
+			.resolve()
+			.then(() => this.loadFontFace(
+				this.fontFamily,
+				this.fontStyle,
+				this.fontVariant,
+				this.fontWeight,
+			))
+			.then(() => {
+				let canvas = this.image;
+				let context = canvas.getContext('2d');
+				context.clearRect(0, 0, canvas.width, canvas.height);
+				if (this.widthInPixels && this.heightInPixels) {
+					canvas.width = this.widthInPixels;
+					canvas.height = this.heightInPixels;
+					context.font = this.font;
+					context.textBaseline = 'middle';
+					let left;
+					switch (this.align) {
+						case 'left':
+							context.textAlign = 'left';
+							left = this.paddingInPixels + this.strokeWidthInPixels / 2;
+							break;
+						case 'right':
+							context.textAlign = 'right';
+							left = this.paddingInPixels + this.strokeWidthInPixels / 2 + this.textWidthInPixels;
+							break;
+						case 'center':
+							context.textAlign = 'center';
+							left = this.paddingInPixels + this.strokeWidthInPixels / 2 + this.textWidthInPixels / 2;
+							break;
+					}
+					let top = this.paddingInPixels + this.strokeWidthInPixels / 2 + this.fontSize / 2;
+					context.fillStyle = this.fillStyle;
+					context.miterLimit = 1;
+					context.lineWidth = this.strokeWidthInPixels;
+					context.strokeStyle = this.strokeStyle;
+					this.lines.forEach(text => {
+						if (this.strokeWidthInPixels) {
+							context.strokeText(text, left, top);
+						}
+						context.fillText(text, left, top);
+						top += this.fontSize + this.lineGapInPixels;
+					});
+				} else {
+					canvas.width = canvas.height = 1;
 				}
-				context.fillText(text, left, top);
-				top += this.fontSize + this.lineGapInPixels;
+				this.needsUpdate = true;
 			});
-		} else {
-			canvas.width = canvas.height = 1;
-		}
-		this.needsUpdate = true;
 	}
 }
