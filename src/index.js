@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 import Document_createCanvas from './utils/Document/createCanvas';
-import Lang_isUndefined from './utils/Lang/isUndefined';
+import Object_isUndefined from './utils/Object/isUndefined';
 
 import getFont from './getFont';
 import getLines from './getLines';
@@ -56,36 +56,24 @@ export default class extends THREE.Texture {
 		this.redrawNow();
 	}
 
-	get align() {
-		return this._align;
+	get text() {
+		return this._text;
 	}
 
-	set align(value) {
-		if (this._align !== value) {
-			this._align = value;
+	set text(value) {
+		if (this._text !== value) {
+			this._text = value;
+			this._lines = undefined;
+			this._textWidthInPixels = undefined;
 			this.redraw();
 		}
 	}
 
-	get fillStyle() {
-		return this._fillStyle;
-	}
-
-	set fillStyle(value) {
-		if (this._fillStyle !== value) {
-			this._fillStyle = value;
-			this.redraw();
+	get lines() {
+		if (Object_isUndefined(this._lines)) {
+			this._lines = getLines(this.text);
 		}
-	}
-
-	get font() {
-		return getFont(
-			this.fontStyle,
-			this.fontVariant,
-			this.fontWeight,
-			this.fontSize,
-			this.fontFamily,
-		);
+		return this._lines;
 	}
 
 	get fontFamily() {
@@ -112,13 +100,13 @@ export default class extends THREE.Texture {
 		}
 	}
 
-	get fontStyle() {
-		return this._fontStyle;
+	get fontWeight() {
+		return this._fontWeight;
 	}
 
-	set fontStyle(value) {
-		if (this._fontStyle !== value) {
-			this._fontStyle = value;
+	set fontWeight(value) {
+		if (this._fontWeight !== value) {
+			this._fontWeight = value;
 			this._textWidthInPixels = undefined;
 			this.redraw();
 		}
@@ -136,31 +124,74 @@ export default class extends THREE.Texture {
 		}
 	}
 
-	get fontWeight() {
-		return this._fontWeight;
+	get fontStyle() {
+		return this._fontStyle;
 	}
 
-	set fontWeight(value) {
-		if (this._fontWeight !== value) {
-			this._fontWeight = value;
+	set fontStyle(value) {
+		if (this._fontStyle !== value) {
+			this._fontStyle = value;
 			this._textWidthInPixels = undefined;
 			this.redraw();
 		}
 	}
 
-	get height() {
-		return this.textHeight + this.strokeWidth + this.padding * 2;
+	get font() {
+		return getFont(
+			this.fontStyle,
+			this.fontVariant,
+			this.fontWeight,
+			this.fontSize,
+			this.fontFamily,
+		);
 	}
 
-	get heightInPixels() {
-		return this.height * this.fontSize;
+	get fillStyle() {
+		return this._fillStyle;
 	}
 
-	get lines() {
-		if (Lang_isUndefined(this._lines)) {
-			this._lines = getLines(this.text);
+	set fillStyle(value) {
+		if (this._fillStyle !== value) {
+			this._fillStyle = value;
+			this.redraw();
 		}
-		return this._lines;
+	}
+
+	get strokeWidth() {
+		return this._strokeWidth;
+	}
+
+	set strokeWidth(value) {
+		if (this._strokeWidth !== value) {
+			this._strokeWidth = value;
+			this.redraw();
+		}
+	}
+
+	get strokeWidthInPixels() {
+		return this._strokeWidth * this.fontSize;
+	}
+
+	get strokeStyle() {
+		return this._strokeStyle;
+	}
+
+	set strokeStyle(value) {
+		if (this._strokeStyle !== value) {
+			this._strokeStyle = value;
+			this.redraw();
+		}
+	}
+
+	get align() {
+		return this._align;
+	}
+
+	set align(value) {
+		if (this._align !== value) {
+			this._align = value;
+			this.redraw();
+		}
 	}
 
 	get lineSpacing() {
@@ -191,6 +222,39 @@ export default class extends THREE.Texture {
 
 	get paddingInPixels() {
 		return this.padding * this.fontSize;
+	}
+
+	get textWidthInPixels() {
+		if (Object_isUndefined(this._textWidthInPixels)) {
+			this._textWidthInPixels = getTextWidth(
+				this.lines,
+				this.font,
+			);
+		}
+		return this._textWidthInPixels;
+	}
+
+	get textHeight() {
+		return (this.lines.length
+			? this.lines.length + this.lineSpacing * (this.lines.length - 1)
+			: 0
+		);
+	}
+
+	get textHeightInPixels() {
+		return this.textHeight * this.fontSize;
+	}
+
+	get widthInPixels() {
+		return this.textWidthInPixels + this.strokeWidthInPixels + this.paddingInPixels * 2;
+	}
+
+	get height() {
+		return this.textHeight + this.strokeWidth + this.padding * 2;
+	}
+
+	get heightInPixels() {
+		return this.height * this.fontSize;
 	}
 
 	redraw() {
@@ -241,69 +305,5 @@ export default class extends THREE.Texture {
 			canvas.width = canvas.height = 1;
 		}
 		this.needsUpdate = true;
-	}
-
-	get strokeStyle() {
-		return this._strokeStyle;
-	}
-
-	set strokeStyle(value) {
-		if (this._strokeStyle !== value) {
-			this._strokeStyle = value;
-			this.redraw();
-		}
-	}
-
-	get strokeWidth() {
-		return this._strokeWidth;
-	}
-
-	set strokeWidth(value) {
-		if (this._strokeWidth !== value) {
-			this._strokeWidth = value;
-			this.redraw();
-		}
-	}
-
-	get strokeWidthInPixels() {
-		return this._strokeWidth * this.fontSize;
-	}
-
-	get text() {
-		return this._text;
-	}
-
-	set text(value) {
-		if (this._text !== value) {
-			this._text = value;
-			this._lines = undefined;
-			this._textWidthInPixels = undefined;
-			this.redraw();
-		}
-	}
-
-	get textHeight() {
-		return (this.lines.length
-			? this.lines.length + this.lineSpacing * (this.lines.length - 1)
-			: 0
-		);
-	}
-
-	get textHeightInPixels() {
-		return this.textHeight * this.fontSize;
-	}
-
-	get textWidthInPixels() {
-		if (Lang_isUndefined(this._textWidthInPixels)) {
-			this._textWidthInPixels = getTextWidth(
-				this.lines,
-				this.font,
-			);
-		}
-		return this._textWidthInPixels;
-	}
-
-	get widthInPixels() {
-		return this.textWidthInPixels + this.strokeWidthInPixels + this.paddingInPixels * 2;
 	}
 }

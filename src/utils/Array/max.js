@@ -1,3 +1,3 @@
 export default function(array) {
-	return array.reduce((maxValue, value) => Math.max(maxValue, value));
+	return array.reduce((a, n) => Math.max(a, n));
 }
