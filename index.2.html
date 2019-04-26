@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<meta
+			content="width=device-width, initial-scale=1"
+			name="viewport"
+		/>
+		<title>THREE.TextTexture</title>
+		<link
+			href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons"
+			rel="stylesheet"
+		/>
+		<link
+			href="https://cdn.jsdelivr.net/npm/quasar@%5E1.0.0-beta.19/dist/quasar.min.css"
+			rel="stylesheet"
+		/>
+		<style>
+			[v-cloak] {
+				display: none;
+			}
+		</style>
+	</head>
+	<body>
+		<q-layout
+			v-cloak
+			id="app"
+			view="hHh lpR fFf"
+		>
+			<q-header
+				class="bg-primary text-white"
+				elevated
+			>
+				<q-toolbar>
+					<q-btn
+						dense
+						flat
+						icon="menu"
+						round
+						@click="drawer = !drawer"
+					></q-btn>
+					<q-toolbar-title>THREE.TextTexture</q-toolbar-title>
+				</q-toolbar>
+			</q-header>
+			<q-drawer
+				v-model="drawer"
+				bordered
+				side="left"
+			>
+				<div class="q-pa-md">
+					<div class="q-gutter-md">
+						<q-input
+							v-model="text"
+							:input-style="{resize: 'none'}"
+							:rows="4"
+							filled
+							label="text"
+							type="textarea"
+						></q-input>
+						<div>
+							<div
+								class="text-grey-8"
+							>fontStyle</div>
+							<q-option-group
+								v-model="fontStyleIndex"
+								:options="fontStyleOptions"
+								dense
+								inline
+							/></q-option-group>
+						</div>
+						<div>
+							<div
+								class="text-grey-8"
+							>fontVariant</div>
+							<q-option-group
+								v-model="fontVariantIndex"
+								:options="fontVariantOptions"
+								dense
+								inline
+							/></q-option-group>
+						</div>
+						<div>
+							<div
+								class="text-grey-8"
+							>fontWeight</div>
+							<q-option-group
+								v-model="fontWeightIndex"
+								:options="fontWeightOptions"
+								dense
+								inline
+							/></q-option-group>
+						</div>
+						<div>
+							<div
+								style="
+									align-items: center;
+									display: flex;
+									justify-content: space-between;
+								"
+							>
+								<div
+									class="text-grey-8"
+								>fontSize</div>
+								<q-chip
+									dense
+								>{{ fontSize }}</q-chip>
+							</div>
+							<div class="q-px-sm">
+								<q-slider
+									v-model="fontSizeIndex"
+									:max="fontSizeValues.length - 1"
+									:min="0"
+									dense
+									snap
+								></q-slider>
+							</div>
+						</div>
+						<q-input
+							v-model="fillStyle"
+							class="my-input"
+							filled
+							label="fillStyle"
+						>
+							<template v-slot:append>
+								<q-icon
+									:style="{color: fillStyle}"
+									class="cursor-pointer"
+									name="colorize"
+								>
+									<q-popup-proxy>
+										<q-color v-model="fillStyle"></q-color>
+									</q-popup-proxy>
+								</q-icon>
+							</template>
+						</q-input>
+					</div>
+				</div>
+			</q-drawer>
+			<q-page-container>
+
+			</q-page-container>
+		</q-layout>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.4.3/polyfill.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/quasar@%5E1.0.0-beta.19/dist/quasar.umd.js"></script>
+		<script src="demo/script.js"></script>
+	</body>
+</html>
