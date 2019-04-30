@@ -1,9 +1,9 @@
 import * as THREE from 'three';
 
 import Array_max from './utils/Array/max';
+import AsyncFunction_throttle from './utils/AsyncFunction/throttle';
 import CSS_font from './utils/CSS/font';
 import Object_isUndefined from './utils/Object/isUndefined';
-import Promise_debounce from './utils/Promise/debounce';
 
 export default class extends THREE.Texture {
 	constructor({
@@ -60,8 +60,8 @@ export default class extends THREE.Texture {
 		this._text = text;
 		this.createCanvas = createCanvas;
 		this.loadFontFace = loadFontFace;
-		this.redraw = Promise_debounce(this.redrawNow);
-		this.redrawNow();
+		this.redraw = AsyncFunction_throttle(this.redraw, 0);
+		this.redraw();
 	}
 
 	get text() {
@@ -285,55 +285,97 @@ export default class extends THREE.Texture {
 		return this.height * this.fontSize;
 	}
 
-	redrawNow() {
+	redraw() {
+		console.log('redraw');
 		return Promise
 			.resolve()
-			.then(() => this.loadFontFace(
-				this.fontFamily,
-				this.fontStyle,
-				this.fontVariant,
-				this.fontWeight,
-			))
 			.then(() => {
-				let canvas = this.image;
-				let context = canvas.getContext('2d');
-				context.clearRect(0, 0, canvas.width, canvas.height);
-				if (this.widthInPixels && this.heightInPixels) {
-					canvas.width = this.widthInPixels;
-					canvas.height = this.heightInPixels;
-					context.font = this.font;
-					context.textBaseline = 'middle';
-					let left;
-					switch (this.align) {
-						case 'left':
-							context.textAlign = 'left';
-							left = this.paddingInPixels + this.strokeWidthInPixels / 2;
-							break;
-						case 'right':
-							context.textAlign = 'right';
-							left = this.paddingInPixels + this.strokeWidthInPixels / 2 + this.textWidthInPixels;
-							break;
-						case 'center':
-							context.textAlign = 'center';
-							left = this.paddingInPixels + this.strokeWidthInPixels / 2 + this.textWidthInPixels / 2;
-							break;
-					}
-					let top = this.paddingInPixels + this.strokeWidthInPixels / 2 + this.fontSize / 2;
-					context.fillStyle = this.fillStyle;
-					context.miterLimit = 1;
-					context.lineWidth = this.strokeWidthInPixels;
-					context.strokeStyle = this.strokeStyle;
-					this.lines.forEach(text => {
-						if (this.strokeWidthInPixels) {
-							context.strokeText(text, left, top);
+				let {
+					align,
+					fillStyle,
+					font,
+					fontFamily,
+					fontSize,
+					fontStyle,
+					fontVariant,
+					fontWeight,
+					heightInPixels,
+					image,
+					lineGapInPixels,
+					lines,
+					paddingInPixels,
+					strokeStyle,
+					strokeWidthInPixels,
+					textWidthInPixels,
+					widthInPixels,
+				} = this;
+				console.log({
+					align,
+					fillStyle,
+					font,
+					fontFamily,
+					fontSize,
+					fontStyle,
+					fontVariant,
+					fontWeight,
+					heightInPixels,
+					image,
+					lineGapInPixels,
+					lines,
+					paddingInPixels,
+					strokeStyle,
+					strokeWidthInPixels,
+					textWidthInPixels,
+					widthInPixels,
+				});
+				return Promise
+					.resolve()
+					.then(() => this.loadFontFace(
+						fontFamily,
+						fontStyle,
+						fontVariant,
+						fontWeight,
+					))
+					.then(() => {
+						let context = image.getContext('2d');
+						context.clearRect(0, 0, image.width, image.height);
+						if (widthInPixels && heightInPixels) {
+							image.width = widthInPixels;
+							image.height = heightInPixels;
+							context.font = font;
+							context.textBaseline = 'middle';
+							let left;
+							switch (align) {
+								case 'left':
+									context.textAlign = 'left';
+									left = paddingInPixels + strokeWidthInPixels / 2;
+									break;
+								case 'right':
+									context.textAlign = 'right';
+									left = paddingInPixels + strokeWidthInPixels / 2 + textWidthInPixels;
+									break;
+								case 'center':
+									context.textAlign = 'center';
+									left = paddingInPixels + strokeWidthInPixels / 2 + textWidthInPixels / 2;
+									break;
+							}
+							let top = paddingInPixels + strokeWidthInPixels / 2 + fontSize / 2;
+							context.fillStyle = fillStyle;
+							context.miterLimit = 1;
+							context.lineWidth = strokeWidthInPixels;
+							context.strokeStyle = strokeStyle;
+							lines.forEach(text => {
+								if (strokeWidthInPixels) {
+									context.strokeText(text, left, top);
+								}
+								context.fillText(text, left, top);
+								top += fontSize + lineGapInPixels;
+							});
+						} else {
+							image.width = image.height = 1;
 						}
-						context.fillText(text, left, top);
-						top += this.fontSize + this.lineGapInPixels;
+						this.needsUpdate = true;
 					});
-				} else {
-					canvas.width = canvas.height = 1;
-				}
-				this.needsUpdate = true;
 			});
 	}
 }
